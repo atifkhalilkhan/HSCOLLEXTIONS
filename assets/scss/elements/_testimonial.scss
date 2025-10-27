@@ -1,0 +1,119 @@
+
+/*---========================
+        02. Elements
+            # Testimonial CSS
+=======================----*/
+
+
+.author-item{
+    display: flex;
+    align-items: center;
+    & .author-thumb{
+        flex: 0 0 auto;
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+        & img{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+    & .author-info{
+        & h5{
+            margin-bottom: 5px;
+        }
+        & span.position{
+            font-size: 14px;
+            line-height: 21px;
+        }
+    }
+}
+
+.author-quote-item{
+    & .quote-icon{
+        & i{
+            font-size: 50px;
+            @extend %secondary-color;
+        }
+    }
+}
+
+
+.testimonial-item{
+    &.style-one{
+        & .testimonial-content{
+            border: 2px solid $heading-color;
+            border-radius: 20px;
+            padding: 35px 40px 40px;
+            @media #{$xs}{
+                padding: 35px 30px 40px;
+            }
+            & > p{
+                font-size: 20px;
+                line-height: 26px;
+                margin-bottom: 30px;
+                @media #{$xs}{
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    &.style-two{
+        border: 1px dashed $light-gray;
+        padding: 40px 75px;
+        text-align: center;
+        border-radius: 100px;
+        @media #{$xs}{
+            border-radius: 30px;
+            padding: 30px 15px;
+        }
+        & .testimonial-content{
+            & .author-item{
+                display: inline-flex;
+            }
+        }
+    }
+    &.style-three{
+        & .testimonial-content{
+            & .quote{
+                font-size: 50px;
+                color: $primary-color;
+                margin-bottom: 40px;
+            }
+            & .ratings{
+                margin-bottom: 20px;
+                & li{
+                    & i{
+                        font-size: 18px;
+                        color: $primary-color;
+                    }
+                }
+            }
+            & p{
+                font-size: 22px;
+                color: $heading-color;
+                font-weight: 500;
+                line-height: 40px;
+                margin-bottom: 25px;
+            }
+            & .author-info{
+                & h5{
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+}
+
+
+.testimonial-sec{
+    & .testimonial-image{
+        & img{
+            border-radius: 10px;
+        }
+    }
+    & .testimonial-wrapper{
+        padding-left: 40px;
+    }
+}

@@ -1,0 +1,84 @@
+
+/*---========================
+        02. Elements
+            # Category CSS
+=======================----*/
+
+.category-item{
+    &.style-one{
+        position: relative;
+        &:after{
+            position: absolute;
+            top: 18px;
+            right: 0;
+            display: inline-block;
+            content: '';
+            width: 6px;
+            height: 80%;
+            background: url(../images/line.png) no-repeat center;
+            background-size: contain;
+        }
+        & .category-img{
+            & img{
+                width: 100%;
+                border-radius: 20px;
+                border: 2px solid $heading-color;
+            }
+        }
+        & .category-content{
+            margin-top: -30px;
+            & .category-btn{
+                font: 400 16px $heading-font;
+                padding: 17px 32px;
+                border-radius: 100px;
+                border: 1px solid $light-gray;
+                @extend %white-bg;
+                line-height: 16px;
+                @extend %heading-color;
+                @media #{$lp}{
+                    padding: 17px 25px;
+                }
+            }
+        }
+    }
+    &.style-two{
+        @extend %white-bg;
+        text-align: center;
+        padding-bottom: 24px;
+        @include transition(.3s);
+        &:hover{
+            @extend %primary-bg;
+            & .category-content{
+                @extend %white-color;
+                & a{
+                    @extend %white-color;
+                }
+            }
+        }
+        & .category-img{
+            display: inline-block;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin-top: -110px;
+            margin-bottom: 21px;
+            & img{
+                width: 100%;
+                border: 1px dashed $light-gray;
+                border-radius: 50%;
+            }
+        }
+        & .category-content{
+            & a{
+                display: block;
+                border-radius: 16px;
+                line-height: 1;
+                font: 400 20px $heading-font;
+                @extend %heading-color;
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+        }
+    }
+}

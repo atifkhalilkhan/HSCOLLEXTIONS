@@ -1,0 +1,629 @@
+html{
+    direction: rtl;
+}
+.form_control{
+    text-align: right;
+}
+.theme-btn.style-one i {
+    margin-left: inherit;
+    margin-right: 8px;
+}
+.nav-search .search-btn{
+    right: auto;
+    left: 20px;
+}
+@media (min-width: 992px) {
+    .text-lg-start {
+        text-align: start !important;
+    }
+}
+@media (min-width: 768px) {
+    .text-md-start {
+        text-align: start !important;
+    }
+}
+@media (min-width: 768px) {
+    .float-md-end {
+        float: left !important;
+    }
+}
+@keyframes marquee_left {
+    from {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0); 
+    }
+    to {
+      -webkit-transform: translate3d(100%, 0, 0);
+      transform: translate3d(100%, 0, 0); 
+    }
+}
+.header-top .top-right {
+    text-align: left;
+}
+.pesco-tabs.style-one {
+    float: left;
+}
+.product-search-category form .search-btn,
+.nice-select:after{
+    right: auto;
+    left: 0;
+}
+.product-search-category form input {
+    border-radius: 5px 0 0 5px;
+    margin-left: auto;
+    margin-right: 30px;
+    border-right: 1px solid var(--light-gray);
+    border-left: none;
+}
+.nice-select .option{
+    text-align: right;
+}
+.main-categories-wrap .categories-dropdown-active{
+    left: auto;
+    right: 0;
+}
+.main-categories-wrap .categories-btn-active span.text i {
+    margin-left: auto;
+    margin-right: 15px;
+}
+.header-navigation.style-one .pesco-nav-main{
+    margin-left: auto;
+    margin-right: 80px;
+}
+.header-navigation .main-menu ul > li > a span.dd-trigger{
+    margin-right: 5px;
+    margin-left: auto;
+}
+.header-navigation .main-menu ul > li .sub-menu{
+    left: auto;
+    right: 0;
+}
+.categori-dropdown-item ul li a img {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.nav-right-item.style-one .deals i {
+    margin-right: auto;
+    margin-left: 8px;
+}
+.nav-right-item.style-one .pro-count {
+    right: auto;
+    left: -10px;
+}
+.hero-wrapper-one .hero-dots {
+    right: auto;
+    left: 10%;
+}
+.hero-wrapper-one .arrow-bg_one {
+    right: auto;
+    left: 19%;
+}
+.hero-content .price-box .currency {
+    margin-right: auto;
+    margin-left: 10px;
+}
+.hero-content.style-one ul li:not(:last-child) {
+    margin-right: inherit;
+    margin-left: 30px;
+}
+.hero-content.style-one h1 span {
+    border-radius: 10px 100px 100px 10px;
+}
+.iconic-box-item.icon-left-box .icon{
+    margin-right: auto;
+    margin-left: 24px;
+}
+.today-deals-arrows.style-one .slick-arrow.prev, .team-arrows.style-one .slick-arrow.prev, .blogs-arrows.style-one .slick-arrow.prev, .releted-product-arrows.style-one .slick-arrow.prev, .testimonial-arrows.style-one .slick-arrow.prev, .trending-product-arrows.style-one .slick-arrow.prev, .category-arrows.style-one .slick-arrow.prev, .feature-arrows.style-one .slick-arrow.prev {
+    margin-right: inherit;
+    margin-left: 20px;
+}
+.banner-item.style-one .banner-img {
+    right: auto;
+    left: 35px;
+}
+.banner-item.style-one .shape.shape-two {
+    right: auto;
+    left: 0;
+}
+.iconic-box-item.style-two .sn-number{
+    right: auto;
+    left: 24px;
+}
+.offer-deal-wrapper .deal-img{
+    right: auto;
+    left: 15px;
+}
+.offer-deal-wrapper .deal-content .sub-heading i {
+    margin-right: auto;
+    margin-left: 10px;
+}
+.testimonial-slider-one {
+    margin-right: auto;
+    margin-left: -50%;
+}
+.post-meta span:not(:last-child):after {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.newsletter-wrapper .newsletter-image{
+    right: auto;
+    left: 60px;
+    text-align: left;
+}
+.newsletter-wrapper .newsletter-shape.pattern-two {
+    right: auto;
+    left: 0;
+}
+.newsletter-wrapper .newsletter-shape.shape-one {
+    right: auto;
+    left: 40%;
+}
+.newsletter-wrapper .newsletter-content-box .theme-btn {
+    right: auto;
+    left: 5px;
+}
+.newsletter-wrapper .newsletter-content-box .form_control {
+    padding: 20px 20px 20px 160px;
+}
+.about-company-widget .widget-content .ct-info-list li i {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.about-company-widget .widget-content .social-link li span {
+    margin-right: auto;
+    margin-left: 15px;
+}
+.about-company-widget .widget-content .social-link li a {
+    margin-right: auto;
+    margin-left: 15px;
+}
+.footer-nav-widget .widget-content ul.widget-menu li img {
+    margin-right: inherit;
+    margin-left: 12px;
+}
+.footer-recent-post-widget .recent-post-item .thumb {
+    margin-right: auto;
+    margin-left: 20px;
+}
+.footer-bg-wrapper .footer-shape.shape-one {
+    left: auto;
+    right: 29%;
+}
+
+/* Home Two */
+
+.hero-wrapper-two .hero-image{
+    right: auto;
+    left: 0;
+}
+.hero-wrapper-two .hero-image .hero-img-shape{
+    left: auto;
+    right: 0;
+}
+.hero-wrapper-two .hero-image .hero-img-shape img {
+    transform: rotate(180deg);
+}
+.banner-item.style-two .banner-img{
+    right: auto;
+    left: 0;
+}
+.banner-item.style-three .banner-img{
+    right: auto;
+    left: 0;
+}
+.weekly-top-product-slider {
+    margin-right: auto;
+    margin-left: -50%;
+}
+.weekly-top-product-slider .slick-slide {
+    margin-right: auto;
+    margin-left: 24px;
+}
+.product-item.style-four .product-info-wrap {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-left: 1px solid var(--light-gray);
+    border-right: 0;
+}
+.product-item.style-three .product-thumbnail .discount{
+    left: auto;
+    right: 16px;
+}
+.testimonial-bg-img {
+    left: auto;
+    right: 0;
+}
+.blog-post-item.style-three .post-thumbnail {
+    right: auto;
+    left: -35px;
+}
+.newsletter-wrapper-two .newsletter-image-two {
+    right: auto;
+    left: 0;
+}
+.newsletter-wrapper-two form .theme-btn {
+    right: auto;
+    left: 6px;
+}
+.newsletter-wrapper-two form .form_control {
+    padding: 18px 20px 18px 150px;
+}
+
+/* InnerPage CSS */
+.page-banner-wrapper .shape.shape-four {
+    right: auto;
+    left: 17%;
+}
+.page-banner-wrapper .shape.shape-three {
+    left: auto;
+    right: 38%;
+}
+.page-banner-wrapper .page-image{
+    right: auto;
+    left: 10%;
+}
+.section-image-box.style-one .experience-box .icon {
+    margin-right: auto;
+    margin-left: 30px;
+}
+.section-image-box.style-one .experience-box .text .year {
+    margin-right: auto;
+    margin-left: 20px;
+}
+.section-image-box.style-one .image-one{
+    left: auto;
+    right: 0;
+}
+.section-image-box.style-one .image-two{
+    right: auto;
+    left: 55px;
+}
+.section-image-box.style-one .experience-box{
+    right: auto;
+    left: 75px;
+}
+.section-image-box.style-one .image-one .img-shape {
+    border-radius: 0 0px 0 40px;
+    right: auto;
+    left: -28px;
+}
+.section-content-box.style-one ul.list li i {
+    margin-right: inherit;
+    margin-left: 12px;
+}
+.author-item .author-thumb{
+    margin-left: 20px;
+    margin-right: auto;
+}
+
+.accordion-item.style-one .accordion-title:after {
+    margin-left: inherit;
+    margin-right: auto;
+}
+.contact-wrapper .shape.shape-one{
+    right: auto;
+    left: 0;
+}
+.sidebar-banner-widget .banner-widget-content .banner-img{
+    right:auto;
+    left: 0;
+}
+.blog-post-item.style-four .post-thumbnail{
+    margin-right: inherit;
+    margin-left: 20px;
+}
+.pesco-pagination ul li:not(:last-child) {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.pesco-pagination.text-center ul li {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.sidebar-category-widget .recent-post-list .post-thumbnail-content img {
+    margin-right: inherit;
+    margin-left: 20px;
+}
+.sidebar-tag-widget .tagcloud a{
+    margin-right: inherit;
+    margin-left: 5px;
+}
+.blog-details-content .blog-post-item .entry-footer span{
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.pesco-reviews-item .author-thumb-info .author-thumb{
+    margin-right: inherit;
+    margin-left: 20px;
+}
+.pesco-reviews-item .reply{
+    right: auto;
+    left: 24px;
+}
+.blog-details-content .blog-post-item .post-content blockquote .quote{
+    right: auto;
+    left: 50px;
+}
+.blog-details-content .blog-post-item .post-content blockquote span:before{
+    margin-right: inherit;
+    margin-left: 16px;
+}
+.post-meta span i {
+    margin-right: auto;
+    margin-left: 8px;
+}
+.blog-details-content .blog-post-item .post-content .post-meta span:not(:last-child):after {
+    margin-left: 15px;
+    margin-right: 20px;
+}
+.shop-filter .filter-product-category .nice-select:after{
+    right: auto;
+    left: 20px;
+}
+.color-list li:not(:last-child) {
+    margin-right: auto;
+    margin-left: 10px;
+}
+.shop-sidebar-area .product-widget.product-size-widget .size-list li {
+    margin-right: auto;
+    margin-left: 8px;
+}
+.shop-sidebar-area .product-widget.product-categories-widget .widget-content label span {
+    margin-left: inherit;
+    margin-right: auto;
+}
+.size-list .form-check {
+    padding-right: 0;
+}
+.color-list .form-check {
+    padding-right: 0;
+}
+.shop-details-wrapper .product-info span.sale i {
+    margin-right: auto;
+    margin-left: 8px;
+}
+.shop-details-wrapper .product-info ul.size-list li:not(:last-child) {
+    margin-right: inherit;
+    margin-left: 8px;
+}
+.shop-details-wrapper .product-info .product-cart-variation .quantity-input {
+    margin-right: auto;
+    margin-left: 24px;
+}
+.shop-details-wrapper .product-info .product-cart-variation .theme-btn {
+    margin-right: auto;
+    margin-left: 24px;
+}
+.shop-details-wrapper .product-info .product-cart-variation .icon-btn{
+    margin-right: auto;
+    margin-left: 12px;
+}
+.shop-details-wrapper .product-info .product-meta a,
+.shop-details-wrapper .product-info .product-meta span {
+    margin-right: auto;
+    margin-left: 5px;
+}
+.shop-details-wrapper .product-info .special-features span:not(:last-child) {
+    margin-right: auto;
+    margin-left: 18px;
+}
+.shop-details-wrapper .product-info .special-features span i {
+    margin-right: auto;
+    margin-left: 8px;
+}
+.shop-details-wrapper .description-wrapper ul.list li:before {
+    margin-right: inherit;
+    margin-left: 16px;
+}
+.additional-information-wrapper .additional-info-box ul li span{
+    float: left;
+}
+.cart-wrapper .product-thumb-item .product-img{
+    margin-right: auto;
+    margin-left: 15px;
+}
+.cart-wrapper .action-cart .cart-remove{
+    margin-left: inherit;
+    margin-right: 12px;
+}
+.cart-wrapper .table th i {
+    margin-right: inherit;
+    margin-left: 8px;
+}
+.payment-method-wrapper ul li {
+    padding: 10px 40px 10px 16px;
+}
+.cart-wrapper .table th:last-child {
+    text-align: left;
+}
+.main-categories-wrap .more_categories span.icon {
+    margin-right: inherit;
+    margin-left: 5px;
+}
+.shop-filter .filter-grid-list a {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.shop-filter .show-text p span {
+    margin-right: inherit;
+    margin-left: 5px;
+}
+.pesco-tabs.style-two .nav-link{
+    margin-right: inherit;
+    margin-left: 16px;
+}
+.pesco-reviews-item .reply i {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+.single-radio {
+    padding-left: auto;
+    padding-right: 24px;
+}
+.single-radio .form-check-input {
+    float: right;
+    margin-left: inherit;
+    margin-right: -1.5em;
+}
+.form-check .form-check-input {
+    float: right;
+    margin-left: inherit;
+    margin-right: -1.5em;
+}
+.form-check {
+    padding-left: auto;
+    padding-right: 1.5em;
+}
+.blog-details-content .blog-post-item .post-content ul li i {
+    margin-right: inherit;
+    margin-left: 10px;
+}
+
+
+
+
+/* Responsive css */
+
+@media only screen and (min-width: 1200px) and (max-width: 1450px) {
+    .header-navigation.style-one .pesco-nav-main {
+      margin-right: 30px;
+    }
+    .hero-wrapper-one .arrow-bg_one {
+        left: 11%;
+    }
+    .hero-wrapper-one .arrow-bg_two {
+        left: 41.7%;
+    }
+    .hero-wrapper-one .hero-dots {
+        left: 5%;
+    }
+    .banner-item.style-one .banner-img {
+        left: 0;
+    }
+    .iconic-box-item.icon-left-box .icon {
+        margin-right: inherit;
+        margin-left: 15px;
+    }
+    .blog-post-item.style-three .post-thumbnail {
+        left: -55px;
+    }
+    .newsletter-wrapper .newsletter-image {
+        left: 40px;
+    }
+    .section-image-box.style-one .experience-box {
+        left: 0;
+    }
+}
+@media (max-width: 1199px) {
+    .cart-sidebar-area {
+      padding-left: inherit;
+      padding-right: 0;
+    }
+    .sidebar-widget-area {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .header-navigation.style-one .pesco-nav-main {
+      margin-right: 20px;
+    }
+    .banner-item.style-one .banner-img {
+        left: 0;
+    }
+    .newsletter-wrapper .newsletter-image {
+        left: 15px;
+    }
+}
+ @media (max-width: 991px) {
+    .header-navigation .pesco-nav-menu .main-menu ul li .dd-trigger {
+        margin-left: inherit;
+        margin-right: auto;
+    }
+    .header-navigation.style-one .pesco-nav-main {
+      margin-right: 30px;
+    }
+    .nav-right-item.style-one .cart-button .icon{
+        margin-right: inherit;
+        margin-left: 15px;
+    }
+    .pesco-tabs.style-one {
+        float: none;
+    }
+}
+@media (max-width: 767px) {
+    .hero-wrapper-one .hero-dots {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .page-banner-wrapper .shape.shape-three {
+      right: 8%;
+    }
+    .page-banner-wrapper .shape.shape-four {
+        left: 10%;
+    }
+    .banner-item.style-one .shape.shape-one {
+        right: 70%;
+    }
+    .shop-filter .filter-product-category h5 {
+        margin-right: inherit;
+        margin-left: 10px;
+    }
+    .testimonial-slider-one {
+        margin-right: auto;
+        margin-left: 0;
+    }
+    .testimonial-slider-one .slick-slide {
+        margin-right: auto;
+        margin-left: 0;
+    }
+    .newsletter-wrapper .newsletter-content-box .theme-btn {
+        left: auto;
+    }
+    .section-image-box.style-one .image-one .img-shape {
+        left: -35px;
+    }
+    .newsletter-wrapper .newsletter-content-box .form_control {
+        padding: 18px 20px 18px;
+    }
+}
+@media (max-width: 575px) {
+    .page-banner-wrapper .shape.shape-three {
+      right: 25%;
+    }
+    .product-item.style-four .product-thumbnail img {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .product-item.style-four .product-info-wrap {
+        border: 1px solid var(--light-gray);
+        border-radius: 15px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-top: 0;
+    }
+    .pesco-reviews-item .reply {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-top: 15px;
+    }
+    .section-image-box.style-one .image-one {
+        right: auto;
+    }
+    .section-image-box.style-one .image-two .line {
+        right: 60px;
+    }
+    .section-image-box.style-one .image-two {
+        right: auto;
+        left: auto;
+        margin-left: inherit;
+        margin-right: auto;
+        text-align: left;
+    }
+    .section-image-box.style-one .experience-box {
+        left: auto;
+    }
+}

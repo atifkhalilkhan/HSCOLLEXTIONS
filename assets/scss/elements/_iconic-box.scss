@@ -1,0 +1,137 @@
+
+/*---========================
+        02. Elements
+            # Iconic Box CSS
+=======================----*/
+
+.iconic-box-item{
+    &.icon-left-box{
+        display: flex;
+        max-width: 285px;
+        & .icon{
+            flex: 0 0 auto;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            @extend %flex-center;
+            @extend %white-bg;
+            border: 1px solid $light-gray;
+            font-size: 24px;
+            @extend %heading-color;
+            margin-right: 24px;
+            @media #{$lp}{
+                margin-right: 15px;
+            }
+        }
+        & .content{
+            & h5{
+                font-size: $font-18;
+                margin-bottom: 10px;
+            }
+            & p{
+                font-size: 14px;
+            }
+        }
+    }
+    &.style-two{
+        @extend %white-bg;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        padding: 23px 25px 19px;
+        position: relative;
+        z-index: 1;
+        @media #{$lp}{
+            padding: 23px 21px 19px;;
+        }
+        @include transition(.4s);
+        &:hover{
+            border-color: $heading-color;
+        }
+        & .sn-number{
+            position: absolute;
+            top: 0;
+            right: 24px;
+            width: 40px;
+            height: 56px;
+            @extend %flex-center;
+            @extend %secondary-light-bg;
+            border-radius: 0px 0px 100px 100px;
+            font-family: $heading-font;
+            @extend %heading-color;
+            transform: translateY(0);
+        }
+        & .icon{
+            font-size: 40px;
+            @extend %heading-color;
+            margin-bottom: 22px;
+        }
+        & .content{
+            & h6{
+                margin-bottom: 12px;
+            }
+            & p{
+                @media #{$lp}{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    &.style-three{
+        text-align: center;
+        padding: 0 24px;
+        & .icon{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid $heading-color;
+            @extend %flex-center;
+            display: inline-flex;
+            font-size: 24px;
+            @extend %heading-color;
+            margin-bottom: 24px;
+        }
+        & .content{
+            & h5{
+                margin-bottom: 10px;
+                @media #{$lm}{
+                    font-size: 17px;
+                }
+            }
+        }
+    }
+}
+
+
+/* Hotline Support */ 
+
+.hotline-support{
+    display: flex;
+    align-items: center;
+    @media #{$xm}{
+        padding: 15px 10px;
+        border-radius: 5px;
+        border: 1px solid #e1e1e1;
+    }
+    & .icon{
+        margin-inline-end: 8px;
+        flex: 0 0 auto;
+        width: 40px;
+        font-size: 40px;
+        @extend %heading-color;
+        & i{
+            line-height: 0;
+        }
+    }
+    & .info{
+        margin-top: -3px;
+        line-height: 1;
+        & span{
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        & h5{
+            font-size: 18px;
+            line-height: 1;
+        }
+    }
+}

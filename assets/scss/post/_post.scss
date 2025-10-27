@@ -1,0 +1,434 @@
+
+/*---========================
+        03. Post
+            # Post CSS
+=======================----*/
+
+.post-meta{
+    & span{
+        display: inline-flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 14px;
+        & i{
+            margin-right: 8px;
+        }
+        &:hover{
+            & a{
+                @extend %primary-color;
+            }
+        }
+        &:not(:last-child){
+            &:after{
+                display: inline-flex;
+                content: '\f110';
+                font-family: flaticon_pesco !important;
+                margin-left: 10px;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+.blog-post-item{
+    & .post-thumbnail{
+        & img{
+            width: 100%;
+            @include border-radius(10px);
+        }
+    }
+    &.style-one{
+        & .post-content{
+            padding-top: 20px;
+            & h3.title{
+                margin-bottom: 18px;
+                line-height: 39px;
+                &:hover{
+                    @extend %primary-color;
+                }
+                @media #{$xs}{
+                    font-size: 22px;
+                    line-height: 35px;
+                }
+            }
+            & p{
+                text-transform: capitalize;
+                font-size: $font-18;
+                line-height: 27px;
+                max-width: 700px;
+                @media #{$xs}{
+                    font-size: 16px;
+                    line-height: 30px;
+                }
+            }
+        }
+    }
+    &.style-two{
+        & .post-content{
+            padding-top: 12px;
+            & h3.title{
+                font: 700 18px $body-font;
+                margin-bottom: 2px;
+                line-height: 23.4px;
+                @media #{$lg}{
+                    font-size: 16px;
+                }
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+        }
+    }
+    &.style-three{
+        position: relative;
+        height: 365px;
+        overflow: hidden;
+        @extend %white-bg;
+        border-radius: 16px;
+        @include transition(.3s);
+        &:hover{
+            @extend %black-dark-bg;
+            & .post-thumbnail{
+                border-color: $white-color;
+            }
+            & .post-content{
+                & .post-meta{
+                    & span{
+                        @extend %light-gray;
+                    }
+                }
+                & h3.title{
+                    @extend %white-color;
+                }
+                & .theme-btn{
+                    &.style-one{
+                        @extend %white-bg;
+                        @extend %heading-color;
+                    }
+                }
+            }
+        }
+        & .post-thumbnail{
+            position: absolute;
+            bottom: -55px;
+            right: -35px;
+            width: 265px;
+            height: 265px;
+            border-radius: 50%;
+            border: 1px solid $heading-color;
+            @media #{$lp}{
+                bottom: -75px;
+                right: -55px;
+            }
+            & img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        & .post-content{
+            padding: 24px 20px;
+            & h3.title{
+                font-size: 20px;
+                line-height: 26px;
+                margin-bottom: 20px;
+                @media #{$lp}{
+                    font-size: 16px;
+                    margin-bottom: 10px;
+                }
+            }
+            & .theme-btn{
+                &.style-one{
+                    padding: 13px 16px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    &.style-four{
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px dashed $light-gray;
+        @media #{$xs}{
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        &:first-child{
+            border-top: 1px dashed $light-gray;
+            padding-top: 40px;
+        }
+        & .post-thumbnail{
+            flex: 0 0 auto;
+            max-width: 340px;
+            width: 100%;
+            margin-right: 20px;
+            border: 1px solid $heading-color;
+            border-radius: 10px;
+            & img{
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+        & .post-content{
+            & h3.title{
+                margin-bottom: 12px;
+                line-height: 39px;
+                @media #{$xm}{
+                    font-size: 20px;
+                    line-height: 30px;
+                }
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+            & p{
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+.blog-details-content{
+    & .blog-post-item{
+        & .post-content{
+            & .post-meta{
+                margin-bottom: 30px;
+                & span{
+                    &:not(:last-child){
+                        &:after{
+                            margin-left: 20px;
+                            margin-right: 15px;
+                        }
+                    }
+                }
+            }
+            & h3.title{
+                margin-bottom: 24px;
+            }
+            & p{
+                margin-bottom: 30px;
+                font-size: 18px;
+                line-height: 27px;
+            }
+            & ul{
+                & li{
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                    font: 18px 500 $body-font;
+                    @extend %heading-color;
+                    & i{
+                        font-size: 16px;
+                        @extend %primary-color;
+                        margin-right: 10px;
+                    }
+                }
+            }
+            & blockquote{
+                position: relative;
+                border: 3px solid $secondary-light-color;
+                border-radius: 16px;
+                padding: 55px 48px;
+                & h4{
+                    line-height: 36px;
+                    font-style: italic;
+                    margin-bottom: 40px;
+                }
+                & span{
+                    display: flex;
+                    align-items: center;
+                    @extend %primary-color;
+                    &:before{
+                        content: '';
+                        width: 25px;
+                        height: 1px;
+                        @extend %black-dark-bg;
+                        margin-right: 16px;
+                    }
+                }
+                & figure{
+                    & img{
+                        border-radius: 5px;
+                        width: 100%;
+                    }
+                }
+                & .quote{
+                    position: absolute;
+                    bottom: 40px;
+                    right: 50px;
+                    & i{
+                        font-size: 60px;
+                        @extend %heading-color;
+                    }
+                }
+            }
+        }
+        & .entry-footer{
+            @extend %white-bg;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            & span{
+                @extend %primary-color;
+                font-weight: 500;
+                margin-right: 10px;
+                text-transform: capitalize;
+            }
+            & .tag-links{
+                & a{
+                    display: inline-flex;
+                    align-items: center;
+                    &:after{
+                        display: inline-block;
+                        content: '';
+                        width: 4px;
+                        height: 4px;
+                        background-color: $text-color;
+                        border-radius: 50%;
+                        margin-left: 5px;
+                        margin-right: 5px;
+                    }
+                }
+            }
+            & .social-share{
+                & a{
+                    &:not(:last-child){
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+.post-navigation{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @media #{$xss}{
+        flex-direction: column;
+    }
+    & .post-nav-item{
+        display: flex;
+        align-items: center;
+        max-width: 370px;
+        & .thumb{
+            flex: 0 0 auto;
+            width: 100px;
+            height: 100px;
+            margin-inline-end: 20px;
+            & img{
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+        & .content{
+            & .post-link{
+                @extend %primary-color;
+                font-weight: 500;
+                margin-bottom: 8px;
+                & i{
+                    margin-inline-end: 10px;
+                }
+            }
+            & h6{
+                line-height: 24px;
+                font: 500 16px $body-font;
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+        }
+    }
+}
+.pesco-reviews-item{
+    position: relative;
+    & .author-thumb-info{
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        & .author-thumb{
+            flex: 0 0 auto;
+            padding: 4px;
+            border: 1px solid $secondary-light-color;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-right: 20px;
+            & img{
+                width: 100%;
+                border-radius: 50%;
+            }
+        }
+        & .author-info{
+            & h5{
+                margin-bottom: 10px;
+                @media #{$xss}{
+                    font-size: 16px;
+                }
+            }
+            & .author-meta{
+                display: flex;
+                align-items: center;
+                & .ratings{
+                    margin-right: 10px;
+                    padding-right: 10px;
+                    border-right: 1px solid $light-gray;
+                }
+                & span{
+                    line-height: 12px;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+    & .author-review-content{
+        & p{
+            line-height: 24px;
+        }
+    }
+    & .reply{
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        @extend %primary-color;
+        font-weight: 500;
+        & i{
+            margin-right: 10px;
+        }
+        @media #{$xss}{
+            position: relative;
+            top: auto;
+            right: auto;
+            margin-top: 15px;
+        }
+    }
+}
+.pesco-comment-area{
+    & ul{
+        & > li.comment{
+            &:not(:last-child){
+                margin-bottom: 30px;
+            }
+        }
+        &.comment-reply{
+            margin-top: 20px;
+            border-top: 1px solid $secondary-light-color;
+        }
+    }
+    & .comment{
+        position: relative;
+        @extend %white-bg;
+        padding: 24px;
+        border-radius: 10px;
+    }
+}
+
+.pesco-contact-area{
+    & h4{
+        margin-bottom: 20px;
+    }
+}

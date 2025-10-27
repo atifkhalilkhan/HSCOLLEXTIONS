@@ -1,0 +1,261 @@
+
+/*---========================
+        04. Sections
+            # Footer CSS
+=======================----*/
+
+
+.footer-bg-wrapper{
+    position: relative;
+    z-index: 1;
+    padding-top: 150px;
+    @media #{$xs}{
+        padding-top: 75px;
+    }
+    & #footer-svg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        & path{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    & .footer-shape{
+        position: absolute;
+        z-index: -1;
+        &.shape-one{
+            bottom: 23%;
+            left: 29%;
+            transform: rotate(47deg);
+            @media #{$xm}{
+                bottom: 18%;
+            }
+            @media #{$xss}{
+                bottom: 10%;
+            }
+        }
+    }
+}
+
+.footer-widget{
+    & h4.widget-title{
+        margin-bottom: 35px;
+    }
+    & .widget-content{
+        & p{
+            font-size: $font-18;
+            line-height: 26px;
+        }
+        & ul.widget-menu{
+            & li{
+                & a{
+                    font-size: $font-18;
+                    color: #5A5858;
+                    &:hover{
+                        @extend %primary-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.about-company-widget{
+    & .widget-content{
+        & .footer-logo{
+            margin-bottom: 25px;
+        }
+        & p{
+            margin-bottom: 15px;
+        }
+        & .ct-info-list{
+            & li{
+                display: flex;
+                align-items: center;
+                &:not(:last-child){
+                    margin-bottom: 7px;
+                }
+                & i{
+                    flex: 0 0 auto;
+                    width: 18px;
+                    font-size: $font-18;
+                    @extend %heading-color;
+                    margin-right: 10px;
+                }
+                & a{
+                    font-size: $font-18;
+                }
+            }
+        }
+        & .social-link{
+            border-top: 1px dashed #AEB0B6;
+            padding-top: 15px;
+            & li{
+                & span{
+                    font-size: 20px;
+                    @extend %heading-color;
+                    font-weight: 500;
+                    margin-right: 15px;
+                }
+                & a{
+                    font-size: 20px;
+                    margin-right: 15px;
+                    @extend %heading-color;
+                    &:hover{
+                        @extend %primary-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.footer-nav-widget{
+    display: flex;
+    justify-content: center;
+    @media #{$lm}{
+        justify-content: flex-start;
+    }
+    & .widget-content{
+        & ul.widget-menu{
+            & li{
+                display: flex;
+                align-items: center;
+                &:not(:last-child){
+                    margin-bottom: 20px;
+                }
+                & img{
+                    flex: 0  0 auto;
+                    width: 16px;
+                    margin-right: 12px;
+                }
+            }
+        }
+    }
+}
+
+.footer-recent-post-widget{
+    & .recent-post-item{
+        display: flex;
+        align-items: center;
+        &:not(:last-child){
+            margin-bottom: 20px;
+        }
+        & .thumb{
+            flex: 0 0 auto;
+            width: 64px;
+            height: 64px;
+            margin-right: 20px;
+            & img{
+                border-radius: 8px;
+            }
+        }
+        & .content{
+            & h4{
+                font-size: $font-16;
+                font-weight: 500;
+                line-height: 20.8px;
+                &:hover{
+                    @extend %primary-color;
+                }
+                @media #{$lp}{
+                    font-size: 15px;
+                }
+            }
+            & span{
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 14px;
+            }
+        }
+    }
+}
+
+
+.copyright-area{
+    padding: 40px 0;
+    border-top: 1px solid $secondary-light-color;
+    & .copyright-text{
+        @media #{$xm}{
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        & p{
+            font-size: $font-18;
+            & span{
+                @extend %primary-color;
+            }
+        }
+        
+    }
+    & .payment-method{
+        @media #{$xm}{
+            text-align: center;
+        }
+    }
+}
+
+.footer-dark{
+    color: $white-color;
+    & .footer-widget{
+        & h4.widget-title{
+            color: $white-color;
+        }
+    }
+    & .about-company-widget{
+        & .widget-content{
+            & .ct-info-list{
+                & li{
+                    & i{
+                        @extend %white-color;
+                    }
+                    & a{
+                        font-size: $font-18;
+                    }
+                }
+            }
+            & .social-link{
+                border-top: 1px dashed #fff;
+                & li{
+                    & span{
+                        @extend %white-color;
+                    }
+                    & a{
+                        @extend %white-color;
+                        &:hover{
+                            @extend %primary-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    & .footer-nav-widget{
+        & .widget-content{
+            & ul.widget-menu{
+                & li{
+                    & a{
+                        color: $white-color;
+                        &:hover{
+                            color: $primary-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    & .footer-recent-post-widget{
+        & .recent-post-item{
+            & .content{
+                & h4{
+                    color: $white-color;
+                    &:hover{
+                        @extend %primary-color;
+                    }
+                }
+            }
+        }
+    }
+}

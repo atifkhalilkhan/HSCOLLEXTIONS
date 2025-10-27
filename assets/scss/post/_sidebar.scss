@@ -1,0 +1,174 @@
+
+/*---========================
+        03. Post
+            # Sidebar CSS
+=======================----*/
+
+.sidebar-widget-area{
+    padding-left: 85px;
+    @media #{$lm}{
+        padding-left: 0;
+    }
+}
+
+.sidebar-widget{
+    border-radius: 10px;
+    @extend %white-bg;
+    padding: 20px 32px 24px;
+    & h4.widget-title{
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid $secondary-light-color;
+    }
+}
+
+.sidebar-search-widget{
+    & .widget-content{
+        & p{
+            margin-bottom: 20px;
+        }
+        & .form_control{
+            padding: 16px 20px;
+            border-radius: 10px;    
+            border: 1px solid $light-gray;
+        }
+    }
+}
+
+.sidebar-category-widget{
+    & .widget-nav{
+        & li{
+            &:not(:last-child){
+                margin-bottom: 10px;
+            }
+            & a{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: 500;
+                @extend %heading-color;
+                & i{
+                    @extend %text-color;
+                }
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+        }
+    }
+}
+
+
+.sidebar-category-widget{
+    & .recent-post-list{
+        & .post-thumbnail-content{
+            display: flex;
+            align-items: center;
+            &:not(:last-child){
+                margin-bottom: 20px;
+            }
+            & img{
+                flex: 0 0 auto;
+                width: 65px;
+                margin-right: 20px;
+                border-radius: 8px;
+            }
+            & .post-title-date{
+                & h6{
+                    font-size: 16px;
+                    line-height: 1.2;
+                    &:hover{
+                        @extend %primary-color;
+                    }
+                }
+                & span{
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+
+.sidebar-tag-widget{
+    & .tagcloud{
+        & a{
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid $secondary-light-color;
+            margin-bottom: 10px;
+            margin-right: 5px;
+        }
+    }
+}
+
+.sidebar-newsletter-widget{
+    border:2px solid $heading-color;
+    border-radius: 10px;
+    @extend %white-bg;
+    padding: 20px 32px 23px;
+    & .newsletter-content{
+        & h5{
+            margin-bottom: 22px;
+        }
+        & p{
+            line-height: 20px;
+        }
+        & form{
+            padding-top: 95px;
+            & .form_control{
+                padding: 18px 20px;
+                border-radius: 6px;
+                border: 1px solid $light-gray;
+                margin-bottom: 12px;
+            }
+        }
+    }
+}
+
+
+
+.sidebar-banner-widget{
+    & .banner-widget-content{
+        position: relative;
+        z-index: 1;
+        @extend %white-bg;
+        overflow: hidden;
+        & .banner-img{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            @media #{$lp}{
+                display: none;
+            }
+        }
+        & .banner-shape{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        & .content{
+            padding: 30px 30px;
+            & span.sale{
+                font: 400 16px $heading-font;
+                @extend %heading-color;
+                padding: 3px 6px;
+                line-height: 16px;
+                margin-bottom: 25px;
+                @extend %secondary-light-bg;
+            }
+            & h3{
+                font-size: 40px;
+                line-height: 40px;
+                & span{
+                    margin-top: 7px;
+                    display: block;
+                    font-size: 16px;
+                    line-height: 16px;
+                    @extend %text-color;
+                    margin-bottom: 50px;
+                }
+            }
+        }
+    }
+}

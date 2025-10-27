@@ -1,0 +1,91 @@
+/*----------------------------------------------------------------------------------- 
+
+Template Name: Pesco - eCommerce HTML Template
+URI: site.com 
+Description: Pesco is a clean, modern, and elegant fashion e-commerce HTML template. It allows you to easily create a well-designed e-commerce website that is easily customizable to fit your brand colors and requirements.
+Author: Pixelfit
+Author URI: https://themeforest.net/user/pixelfit
+Version: 1.0 
+
+
+------------------------------------------------------
+   CSS INDEX
+-----------------------------------------------------
+
+   01. Base css 
+
+   02. Elements 
+     # Common css
+     # Header css
+     # Hero css
+     # Banner css
+     # Category css
+     # Iconic Box css
+     # Products css
+     # Tabs css
+     # Team css
+     # Testimonial css
+     # Faq css
+     # Shop css
+     # Cart css
+     # Checkout css
+
+   03. Post
+     # post css
+     # Sidebar css
+
+   04. Sections
+     # Sliders css
+     # Wrapper css
+     # Footer css
+     
+   05 Contact css
+-------------------------------------------------------    */
+
+
+
+
+
+
+// Import All SASS Directory Files
+
+// Global Version
+
+@import 'variable';
+
+@import 'mixin';
+
+// Base Directions
+
+@import 'extend';
+
+@import 'base';
+
+// All sections CSS
+
+@import 'elements/common';
+@import 'elements/header';
+@import 'elements/hero';
+@import 'elements/banner';
+@import 'elements/category';
+@import 'elements/iconic-box';
+@import 'elements/products';
+@import 'elements/tabs';
+@import 'elements/team';
+@import 'elements/testimonial';
+@import 'elements/faq';
+@import 'elements/shop';
+@import 'elements/cart';
+@import 'elements/checkout';
+
+// Post
+@import 'post/post';
+@import 'post/sidebar';
+
+// Sections
+@import 'sections/sliders';
+@import 'sections/wrapper';
+@import 'sections/footer';
+
+// Contact
+@import 'contact';

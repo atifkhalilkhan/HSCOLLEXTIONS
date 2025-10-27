@@ -1,0 +1,109 @@
+$flaticon_pesco-font: "flaticon_pesco";
+
+@font-face {
+    font-family: $flaticon_pesco-font;
+    src: url("./flaticon_pesco.woff2?5fad354381a701889fdd6856e9295311") format("woff2"),
+url("./flaticon_pesco.woff?5fad354381a701889fdd6856e9295311") format("woff"),
+url("./flaticon_pesco.eot?5fad354381a701889fdd6856e9295311#iefix") format("embedded-opentype"),
+url("./flaticon_pesco.ttf?5fad354381a701889fdd6856e9295311") format("truetype"),
+url("./flaticon_pesco.svg?5fad354381a701889fdd6856e9295311#flaticon_pesco") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon_pesco !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon_pesco-map: (
+    "star": "\f101",
+    "support": "\f102",
+    "curved-arrow-with-broken-line": "\f103",
+    "star-1": "\f104",
+    "stars": "\f105",
+    "searching": "\f106",
+    "payment-method": "\f107",
+    "currency": "\f108",
+    "right-quote": "\f109",
+    "delivery": "\f10a",
+    "arrow-left": "\f10b",
+    "arrow-right": "\f10c",
+    "star-2": "\f10d",
+    "sparkler": "\f10e",
+    "star-of-life": "\f10f",
+    "star-3": "\f110",
+    "star-of-life-1": "\f111",
+    "linkedin": "\f112",
+    "twitter": "\f113",
+    "facebook": "\f114",
+    "instagram": "\f115",
+);
+
+.flaticon-star:before {
+    content: map-get($flaticon_pesco-map, "star");
+}
+.flaticon-support:before {
+    content: map-get($flaticon_pesco-map, "support");
+}
+.flaticon-curved-arrow-with-broken-line:before {
+    content: map-get($flaticon_pesco-map, "curved-arrow-with-broken-line");
+}
+.flaticon-star-1:before {
+    content: map-get($flaticon_pesco-map, "star-1");
+}
+.flaticon-stars:before {
+    content: map-get($flaticon_pesco-map, "stars");
+}
+.flaticon-searching:before {
+    content: map-get($flaticon_pesco-map, "searching");
+}
+.flaticon-payment-method:before {
+    content: map-get($flaticon_pesco-map, "payment-method");
+}
+.flaticon-currency:before {
+    content: map-get($flaticon_pesco-map, "currency");
+}
+.flaticon-right-quote:before {
+    content: map-get($flaticon_pesco-map, "right-quote");
+}
+.flaticon-delivery:before {
+    content: map-get($flaticon_pesco-map, "delivery");
+}
+.flaticon-arrow-left:before {
+    content: map-get($flaticon_pesco-map, "arrow-left");
+}
+.flaticon-arrow-right:before {
+    content: map-get($flaticon_pesco-map, "arrow-right");
+}
+.flaticon-star-2:before {
+    content: map-get($flaticon_pesco-map, "star-2");
+}
+.flaticon-sparkler:before {
+    content: map-get($flaticon_pesco-map, "sparkler");
+}
+.flaticon-star-of-life:before {
+    content: map-get($flaticon_pesco-map, "star-of-life");
+}
+.flaticon-star-3:before {
+    content: map-get($flaticon_pesco-map, "star-3");
+}
+.flaticon-star-of-life-1:before {
+    content: map-get($flaticon_pesco-map, "star-of-life-1");
+}
+.flaticon-linkedin:before {
+    content: map-get($flaticon_pesco-map, "linkedin");
+}
+.flaticon-twitter:before {
+    content: map-get($flaticon_pesco-map, "twitter");
+}
+.flaticon-facebook:before {
+    content: map-get($flaticon_pesco-map, "facebook");
+}
+.flaticon-instagram:before {
+    content: map-get($flaticon_pesco-map, "instagram");
+}

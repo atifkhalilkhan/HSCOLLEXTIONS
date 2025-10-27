@@ -1,0 +1,87 @@
+
+/*---========================
+        02. Elements
+            # Tabs CSS
+=======================----*/
+
+.pesco-tabs{
+    &.style-one{
+        float: right;
+        max-width: 430px;
+        @media #{$xm}{
+            float: none;
+            margin: 0 auto 50px;
+        }
+        & .nav-tabs{
+            padding: 6px 8px;
+            border: 1px solid $light-gray;
+            border-radius: 50px;
+        }
+        & .nav-link{
+            padding: 12px 20px;
+            line-height: 16px;
+            background-color: transparent;
+            border: none;
+            border-radius: 30px;
+            @extend %heading-color;
+            &.active{
+                @extend %white-color;
+                @extend %black-dark-bg;
+            }
+            @media #{$xss}{
+                font-size: 14px;
+                padding: 12px 13px;
+            }
+        }
+    }
+    &.style-two{
+        & .nav-tabs{
+            border:none;
+        }
+        & .nav-link{
+            padding: 12px 20px;
+            line-height: 16px;
+            background-color: transparent;
+            border: 1px solid $light-gray;
+            border-radius: 4px;
+            font-size: 18px;
+            line-height: 18px;
+            @extend %heading-color;
+            margin-right: 16px;
+            &.active{
+                @extend %white-color;
+                border-color: transparent;
+                @extend %black-dark-bg;
+            }
+        }
+    }
+    &.style-three{
+        & .nav-tabs{
+            border:none;
+            justify-content: center;
+            gap:20px;
+        }
+        & .nav-link{
+            padding: 12px 20px;
+            line-height: 16px;
+            background-color: transparent;
+            border: 1px solid $light-gray;
+            border-radius: 4px;
+            font: 600 18px $body-font;
+            line-height: 18px;
+            @extend %heading-color;
+            &.active{
+                @extend %white-color;
+                border-color: transparent;
+                @extend %primary-bg;
+            }
+        }
+    }
+}
+
+
+.single-information-item {
+    & .content{
+        flex: 0 0 auto;
+    }
+}

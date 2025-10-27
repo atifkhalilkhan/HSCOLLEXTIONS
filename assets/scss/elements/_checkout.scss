@@ -1,0 +1,224 @@
+
+/*---========================
+        02. Elements
+            # Checkout CSS
+=======================----*/
+
+.billing-wrapper{
+    & h3.title{
+        margin-bottom: 40px;
+    }
+}
+
+
+.checkout-form{
+    & label{
+        display: block;
+        font-size: 16px;
+        font-weight: 500;
+        @extend %heading-color;
+        margin-bottom: 3px;
+        & span{
+            color: #F00;
+        }
+    }
+    & .nice-select,
+    & .form_control{
+        padding: 17px 20px;
+        line-height: 20px;
+        border: 1px solid $light-gray;
+        @extend %white-bg;
+        border-radius: 6px;
+        margin-bottom: 23px;
+    }
+    & .nice-select{
+        margin-bottom: 23px;
+        &:after{
+            top: 50%;
+            @include transform(translateY(-50%));
+            right: 20px;
+        }
+    }
+}
+
+
+.order-summary-wrapper{
+    & h3.title{
+        margin-bottom: 40px;
+    }
+    & .product-item,
+    & .list-item{
+        display: flex;
+        justify-content: space-between;
+    }
+    & .list-item{
+        &:not(:last-child){
+            padding-bottom: 15px;
+            border-bottom: 1px solid $light-gray;
+            margin-bottom: 20px;
+        }
+        & .total,
+        & .item-title,
+        & .subtotal,
+        & .shipping,
+        & .shipping-total,
+        & .product-total{
+            font-size: 18px;
+            @extend %heading-color;
+            font-weight: 500;
+        }
+    }
+    & .product-item{
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        &:not(:last-child){
+            margin-bottom: 20px;
+        }
+        & .product-name{
+            & span{
+                @extend %primary-color;
+            }
+        }
+    }
+}
+
+
+
+.payment-method-wrapper{
+    & ul{
+        & li{
+            padding: 10px 16px 10px 40px;
+            @extend %white-bg;
+            margin-bottom: 15px;
+            cursor: pointer;
+            & label{
+                font-weight: 500;
+                @extend %heading-color;
+            }
+            & p{
+                font-style: italic;
+                font-size: 14px;
+                line-height: 21px;
+                @extend %heading-color;
+            }
+        }
+    }
+}
+
+
+.single-radio{
+    display: block;
+    padding-left: 24px;
+    margin-bottom: 10px;
+}
+.single-radio .form-check-input {
+    float: left;
+    margin-left: -1.5em;
+}
+
+.form-check-label{
+    cursor: pointer;
+}
+
+.form-check-input{
+    background-color: transparent;
+    border-color: $heading-color;
+    &:focus{
+        box-shadow: none;
+    }
+}
+
+.form-check-input[type=checkbox]{
+    position: relative;
+    border-radius: 2px;
+}
+.form-check-input:checked {
+    background-color: transparent;
+    border: 1px solid $heading-color;
+}
+.form-check-input:checked[type=checkbox]{
+    --bs-form-check-bg-image: none;
+    border-color: $heading-color;
+}
+.form-check-input:checked[type=checkbox]:after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Pro';
+    font-size: 10px;
+    position: absolute;
+    top: -6px;
+    right: 1px;
+    @extend %heading-color;
+}
+
+
+/* Size Variation */ 
+
+.size-list{
+    & .form-check-input{
+        display: none;
+    }
+    & .form-check{
+        padding-left: 0;
+        margin-bottom: 0;
+        & label{
+            border: 1px solid $light-gray;
+            padding: 6px 16px;
+            font-size: 14px;
+            line-height: 14px;
+            border-radius: 50px;
+        }
+    }
+    & input[type="radio"]:checked + label{
+        @extend %primary-bg;
+        @extend %white-color;
+        border-color: transparent;
+    }
+}
+
+/* Color Variation */ 
+
+.color-list{
+    & li{
+        display: inline-block;
+        &:not(:last-child){
+            margin-right: 10px;
+        }
+    }
+    .form-check-input{
+        display: none;
+    }
+    & .form-check{
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    & label{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e1e1e1;
+        & span{
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            &.color1{
+                background-color: #000;
+            }
+            &.color2{
+                background-color: red;
+            }
+            &.color3{
+                background-color: blue;
+            }
+            &.color4{
+                background-color: #bf2169;
+            }
+        }
+    }
+    & input[type="radio"]:checked + label{
+        border-color: $primary-color;
+    }
+}

@@ -1,0 +1,236 @@
+
+/*---========================
+        02. Elements
+            # Banner CSS
+=======================----*/
+
+.banner-item{
+    &.style-one{
+        padding: 48px 50px 50px;
+        position: relative;
+        border: 2px solid $heading-color;
+        border-radius: 20px;
+        z-index: 1;
+        overflow: hidden;
+        @media #{$xs}{
+            padding: 38px 30px 40px;
+        }
+        &.bg-one{
+            background-color: #FFF9F8;
+        }
+        &.bg-two{
+            background-color: #FEFFF8;
+        }
+        & .shape{
+            position: absolute;
+            z-index: -1;
+            &.shape-one{
+                top: 45px;
+                left: 45%;
+                @media #{$xs}{
+                    left: 70%;
+                }
+            }
+            &.shape-two{
+                top: 0;
+                right: 0;
+            }
+        }
+        & .banner-img{
+            position: absolute;
+            bottom: 0;
+            right: 35px;
+            @media #{$lp}{
+                width: 50%;
+                right: 0;
+            }
+            @media #{$lg}{
+                width: 40%;
+                right: 0;
+            }
+            @media #{$xs}{
+                display: none;
+            }
+        }
+        & .banner-content{
+            max-width: 270px;
+            & span{
+                font: 500 23px $body-font;
+                line-height: 23px;
+                & span.off{
+                    display: block;
+                    font-size: 60px;
+                    line-height: 60px;
+                    @extend %heading-color;
+                }
+            }
+            & h4{
+                margin-top: 30px;
+                margin-bottom: 35px;
+                line-height: 36px;
+                @extend %text-color;
+            }
+            & .theme-btn{
+                &.style-one{
+                    padding: 16px 24px;
+                    line-height: 18px;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+    &.style-two{
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        border-radius: 20px;
+        padding: 56px 40px;
+        @media #{$xss}{
+            display: flex;
+            flex-direction: column;
+            padding: 40px 30px 0 40px;
+        }
+        & .banner-img{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+            max-width: 430px;
+            @media #{$lp}{
+                max-width: 230px;
+            }
+            @media #{$lm}{
+                max-width: 300px
+            }
+            @media #{$xss}{
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                order: 2;
+            }
+        }
+        & .banner-content{
+            max-width: 245px;
+            @media #{$xm}{
+                max-width: 350px
+            }
+            @media #{$xs}{
+                max-width: 350px
+            }
+            @media #{$xss}{
+                max-width: 100%;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            & span{
+                @extend %white-bg;
+                padding: 4px 10px;
+                @extend %heading-color;
+                border-radius: 2px;
+                margin-bottom: 25px;
+            }
+            & h4{
+                @extend %white-color;
+                margin-bottom: 20px;
+                line-height: 36px;
+            }
+            & .separator{
+                border-bottom: 2px dashed $white-color;
+                margin-bottom: 75px;
+            }
+            & .theme-btn{
+                &.style-two{
+                    @extend %white-color;
+                    border-color: $white-color;
+                }
+            }
+        }
+    }
+    &.style-three{
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        border-radius: 20px;
+        padding: 56px 40px;
+        @media #{$xss}{
+            display: flex;
+            flex-direction: column;
+            padding: 40px 30px 0 40px;
+        }
+        & .banner-img{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+            @media #{$lp}{
+                max-width: 250px;
+            }
+            @media #{$lm}{
+                max-width: 300px
+            }
+            @media #{$xss}{
+                position: relative;
+                bottom: auto;
+                right: auto;
+                text-align: center;
+                order: 2;
+            }
+        }
+        & .banner-content{
+            max-width: 430px;
+            @media #{$xm}{
+                max-width: 370px
+            }
+            @media #{$xs}{
+                max-width: 350px
+            }
+            @media #{$xss}{
+                max-width: 100%;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            & span{
+                font-size: 40px;
+                font-weight: 700;
+                line-height: 60px;
+                @extend %primary-color;
+            }
+            & .separator{
+                position: relative;
+                width: 60px;
+                height: 1px;
+                @extend %black-dark-bg;
+                margin-bottom: 21px;
+                &:after{
+                    position: absolute;
+                    right: 0;
+                    bottom: -2px;
+                    content: '';
+                    width: 6px;
+                    height: 6px;
+                    @extend %black-dark-bg;
+                    border-radius: 50%;
+                }
+                @media #{$xss}{
+                    display: none;
+                }
+            }
+            & h4{
+                @extend %heading-color;
+                margin-bottom: 20px;
+                line-height: 36px;
+                font-size: 40px;
+                line-height: 60px;
+                @media #{$xm}{
+                   font-size: 24px;
+                   line-height: 35px;
+                }
+                @media #{$xs}{
+                    font-size: 20px;
+                    line-height: 30px;
+                }
+            }
+        }
+    }
+}

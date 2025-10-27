@@ -1,0 +1,207 @@
+
+/*---========================
+        02. Elements
+            # Cart CSS
+=======================----*/
+
+
+/* Cart Page */ 
+
+.cart-wrapper{
+    .table>:not(caption)>*>*{
+        background-color: transparent;
+    }
+    & .table{
+        @media #{$xs}{
+            width: 800px;
+        }
+        & th{
+            font: 400 20px $heading-font;
+            vertical-align: middle;
+            border-bottom: 1px solid $secondary-light-color;
+            padding: 0 0 20px;
+            @media #{$xs}{
+                font-size: 16px;
+            }
+            & i{
+                margin-right: 8px;
+                font-size: 16px;
+            }
+            &:first-child{
+                padding-left: 0;
+            }
+            &:last-child{
+                padding-right: 0;
+                text-align: right;
+            }
+        }
+        & td{
+            padding: 30px 0;
+            vertical-align: middle;
+            border-bottom: 1px solid $secondary-light-color;
+        }
+    }
+    & .product-thumb-item{
+        display: flex;
+        align-items: center;
+        max-width: 320px;
+        & .product-img{
+            flex: 0 0 auto;
+            max-width: 80px;
+            margin-right: 15px;
+        }
+        & .product-info{
+            & h4.title{
+                font: 500 18px $body-font;
+                text-transform: capitalize;
+                margin-bottom: 5px;
+                line-height: 27px;
+                &:hover{
+                    @extend %primary-color;
+                }
+            }
+            & .product-meta{
+                & span{
+                    display: inline-flex;
+                    align-items: center;
+                    font: 500 14px $body-font;
+                    line-height: 21px;
+                    @extend %text-color;
+                    &:not(:last-child){
+                        &:after{
+                            display: inline-block;
+                            content: '';
+                            width: 4px;
+                            height: 4px;
+                            border-radius: 50%;
+                            @extend %secondary-bg;
+                            margin-left: 8px;
+                            margin-right: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    & .price{
+        font: 400 16px $heading-font;
+        @extend %heading-color;
+    }
+    & .action-cart{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        & .cart-remove{
+            flex: 0 0 auto;
+            width: 40px;
+            height: 40px;
+            border: 1px solid $light-gray;
+            @extend %flex-center;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 12px;
+        }
+        & .quantity-input{
+            max-width: 115px;
+            border: 1px solid $light-gray;
+            border-radius: 50px;
+            @extend %white-bg;
+            & .quantity-up,
+            & .quantity-down{
+                padding: 7px 15px;
+            }
+            & .quantity{
+                max-width: 35px;
+                border: none;
+                height: 40px;
+                width: 30px;
+                text-align: center;
+
+            }
+        }
+    }
+    & .total-price{
+        text-align: right;
+        font: 400 16px $heading-font;
+        @extend %heading-color;
+    }
+    & .theme-btn{
+        &.style-one{
+            padding: 20px 30px;
+        }
+    }
+}
+
+
+.cart-sidebar-area{
+    padding-left: 24px;
+    @media #{$lm}{
+        padding-left: 0;
+    }
+    & .cart-widget{
+        padding: 40px 30px;
+        border-radius: 10px;
+        border: 2px solid $heading-color;
+        @extend %white-bg;
+        & h4{
+            margin-bottom: 20px;
+        }
+        & p{
+            margin-bottom: 16px;
+        }
+        &.coupon-box-widget{
+            & form{
+                display: flex;
+                & input{
+                    flex: 0 0 auto;
+                    width: calc(100% - 120px);
+                    @extend %white-bg;
+                    border-radius: 6px;
+                    border: 1px solid #E5E5E8;
+                    padding: 10px 20px;
+                }
+                & button{
+                    padding: 12px 32px;
+                    border-radius: 6px;
+                    @extend %black-dark-bg;
+                    @extend %white-color;
+                    margin-left: 12px;
+                }
+            }
+        }
+        &.cart-total-widget{
+            & .sub-total{
+                padding-bottom: 20px;
+                border-bottom: 1px solid #E5E5E8;
+                margin-bottom: 20px;
+            }
+            & .sub-total,
+            & .price-total{
+                
+                & span{
+                    float: right;
+                    font-weight: 500;
+                    font-size: 20px;
+                }
+            }
+            & .shipping-cart{
+                padding-bottom: 20px;
+                border-bottom: 1px solid #E5E5E8;
+                margin-bottom: 20px;
+                & label{
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+            & .price-total{
+                margin-bottom: 40px;
+            }
+            & .proceced-checkout{
+                & .theme-btn{
+                    border-radius: 8px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

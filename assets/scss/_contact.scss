@@ -1,0 +1,98 @@
+
+/*---========================
+        05. Contact CSS
+=======================----*/
+
+/* Single Information Item */ 
+
+.single-information-item{
+    flex-wrap: wrap;
+    @media #{$xss}{
+        flex-direction: column;
+    }
+    &:not(:last-child){
+        margin-bottom: 45px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid $secondary-light-color;
+    }
+    & .content{
+        max-width: 30%;
+        @media #{$xss}{
+            max-width: 35%;
+        }
+        @media #{$xss}{
+            max-width: 100%;
+        }
+        & h4{
+            @extend %primary-color;
+            margin-bottom: 20px;
+        }
+        & p{
+            font-size: 20px;
+            @extend %heading-color;
+            font-weight: 500;
+            line-height: 30px;
+            &:hover{
+                & a{
+                    @extend %primary-color;
+                }
+            }
+            @media #{$xm}{
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+/* Single Information Item */ 
+
+.pesco-contact-form{
+    & .form_control{
+        border: 1px solid $light-gray;
+        background-color: transparent;
+        padding: 18px 20px;
+        border-radius: 10px;
+        margin-bottom: 24px;
+    }
+}
+
+/* Contact Wrapper */ 
+
+.contact-wrapper{
+    @extend %white-bg;
+    padding: 55px 60px 60px;
+    @media #{$xs}{
+        padding: 35px 30px 40px;
+    }
+    & .shape{
+        position: absolute;
+        z-index: -1;
+        &.shape-one{
+            bottom: 0;
+            right: 0;
+        }
+    }
+    & h3{
+        font-size: 40px;
+        line-height: 1;
+        margin-bottom: 47px;
+        @media #{$xs}{
+            font-size: 30px;
+            margin-bottom: 27px;
+        }
+    }
+    & .pesco-contact-form{
+        & .form_control{
+            @extend %white-bg;
+        }
+        textarea.form_control{
+            margin-bottom: 30px;
+        }
+        & .theme-btn{
+            &.style-one{
+                padding: 21px 40px;
+                font-size: 18px;
+            }
+        }
+    }
+}

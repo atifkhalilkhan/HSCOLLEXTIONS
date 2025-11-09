@@ -1,3 +1,4 @@
+
 <!--====== Start Newsletter Section ======-->
         <section class="newsletter-section">
             <div class="newsletter-wrapper-two p-r z-1 pt-80 pb-85">
@@ -23,10 +24,11 @@
                                         special offers from top Pakistani brands.
                                     </p>
                                 </div>
-                                <form>
+                                <form action="https://api.web3forms.com/submit" method="POST">
+                                    <input type="hidden" name="access_key" value="e8692be6-515c-4244-a7ba-6497ae5b8e20">
                                     <input type="email" class="form_control" placeholder="Write your Email Address"
                                         name="email" required>
-                                    <button class="theme-btn style-one">Subscribe</button>
+                                    <button type="submit" class="theme-btn style-one">Subscribe</button>
                                 </form>
                             </div>
                         </div>
@@ -34,3 +36,36 @@
                 </div>
             </div>
         </section><!--====== End Newsletter Section ======-->
+
+<script>
+const form = document.querySelector('form[action="https://api.web3forms.com/submit"]');
+const msgBox = document.createElement('div');
+form.appendChild(msgBox);
+
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    msgBox.textContent = "⏳ Submitting...";
+    msgBox.style.color = "#777";
+
+    const formData = new FormData(form);
+
+    try {
+        const res = await fetch(form.action, { method: 'POST', body: formData });
+        const text = await res.text();
+
+        // check if success is in response text
+        if (text.includes("success")) {
+            msgBox.textContent = "🎉 Thank you for subscribing!";
+            msgBox.style.color = "pink";
+            form.reset();
+        } else {
+            msgBox.textContent = "⚠️ Something went wrong. Try again.";
+            msgBox.style.color = "red";
+        }
+    } catch (err) {
+        msgBox.textContent = "⚠️ Network error. Please try again.";
+        msgBox.style.color = "red";
+    }
+});
+</script>
+

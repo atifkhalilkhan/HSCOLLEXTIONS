@@ -2,24 +2,49 @@
 session_start();
 include 'config.php';
 
+
 // Initialize sessions
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 if (!isset($_SESSION['wishlist'])) $_SESSION['wishlist'] = [];
 
 // === HANDLE ADD TO CART ===
-if (isset($_POST['add_to_cart'])) {
+if (isset($_POST['add_to_cart']) && $_POST['add_to_cart'] == 1) {
+    // Log POST data for debugging
+    error_log("Add to Cart POST received: " . print_r($_POST, true));
+
+    // Validate POST data
+    if (empty($_POST['id']) || empty($_POST['title']) || empty($_POST['image']) || !isset($_POST['price'])) {
+        error_log("Invalid POST data for add_to_cart: " . print_r($_POST, true));
+        header("Location: " . ($_POST['redirect_url'] ?? $_SERVER['HTTP_REFERER'] ?? 'shops.php') . "?error=invalid_data");
+        exit;
+    }
+
     $product_id = (int)$_POST['id'];
+    $price = (float)($_POST['discount_price'] ?: $_POST['price']);
+    
+    // Validate price
+    if ($price <= 0 || !is_numeric($price)) {
+        error_log("Invalid price for product ID $product_id: $price");
+        header("Location: " . ($_POST['redirect_url'] ?? $_SERVER['HTTP_REFERER'] ?? 'shops.php') . "?error=invalid_price");
+        exit;
+    }
+
     $cart_item = [
         'id' => $product_id,
-        'title' => $_POST['title'],
-        'image' => $_POST['image'],       
-        'price' => (float)($_POST['discount_price'] ?: $_POST['price']),
+        'title' => trim($_POST['title']),
+        'image' => trim($_POST['image']),
+        'price' => $price,
         'quantity' => 1
     ];
+
+    // Check if item already in cart
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['id'] == $cart_item['id']) {
-            $item['quantity'] += 1;
+            $item['quantity'] = (int)$item['quantity'] + 1;
             $found = true;
             break;
         }
@@ -27,10 +52,30 @@ if (isset($_POST['add_to_cart'])) {
     if (!$found) {
         $_SESSION['cart'][] = $cart_item;
     }
-    header("Location: shops.php?" . http_build_query($_GET));
+
+    // Log cart contents after update
+    error_log("Cart updated: " . print_r($_SESSION['cart'], true));
+
+    // Redirect back to the same page
+    $redirect = $_POST['redirect_url'] ?? $_SERVER['HTTP_REFERER'] ?? 'shops.php';
+    header("Location: $redirect?success=added_to_cart");
     exit;
 }
 
+// === HANDLE REMOVE FROM CART ===
+if (isset($_GET['remove'])) {
+    $remove_id = (int)$_GET['remove'];
+    foreach ($_SESSION['cart'] as $index => $item) {
+        if ($item['id'] == $remove_id) {
+            unset($_SESSION['cart'][$index]);
+            break;
+        }
+    }
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
+    error_log("Item removed from cart, ID: $remove_id. New cart: " . print_r($_SESSION['cart'], true));
+    header("Location: cart.php?success=removed_from_cart");
+    exit;
+}
 // === HANDLE ADD TO WISHLIST ===
 if (isset($_POST['add_to_wishlist'])) {
     $product_id = (int)$_POST['id'];
@@ -693,9 +738,7 @@ body { transition: padding-top .12s ease; }
                     <?php endforeach; ?>
                 <?php endif; ?>
             </ul>
-            <div class="wishlist-button-box">
-                <a href="wishlist.php" class="theme-btn style-one">View Wishlist</a>
-            </div>
+            
         </div>
     </div>
     <!-- Header -->

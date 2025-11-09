@@ -85,24 +85,25 @@ if (!isset($_SESSION['wishlist'])) $_SESSION['wishlist'] = [];
                                 <div class="tab-pane fade show active" id="menuTab">
                                     <nav class="main-menu">
                                         <ul>
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about-us.html">About Us</a></li>
+                                            <li><a href="index.php">Home</a></li>
+                                            <li><a href="about-us.php">About Us</a></li>
                                             <li class="menu-item has-children">
                                                 <a href="#">Products</a>
                                                 <ul class="sub-menu">
                                                     <li><a href="shops.php">All Products</a></li>
-                                                    <li><a href="shops.php?category[]=1">Unstitched Collection</a></li>
-                                                    <li><a href="shops.php?category[]=2">Stitched Collection</a></li>
-                                                    <li><a href="shops.php?category[]=3">Casual Clipers</a></li>
-                                                    <li><a href="shops.php?category[]=4">Footwear</a></li>
-                                                    <li><a href="shops.php?category[]=5">Handbags</a></li>
+                                                    <li><a href="shops.php">All Products</a></li>
+                                        <li><a href="shops.php?category[]=1">Unstitched Collection</a></li>
+                                        <li><a href="shops.php?category[]=2">Stitched Collection</a></li>
+                                        <li><a href="shops.php?category[]=5">Casual Clipers</a></li>
+                                        <li><a href="shops.php?category[]=3">Footwear</a></li>
+                                        <li><a href="shops.php?category[]=4">Handbags</a></li>
                                                     <li><a href="cart.php">Cart</a></li>
                                                     <li><a href="checkout.php">Checkout</a></li>
                                                     <li><a href="wishlist.php">Wishlist</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="faq.html">FAQs</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
+                                            <li><a href="faq.php">FAQs</a></li>
+                                            <li><a href="contact.php">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -135,24 +136,24 @@ if (!isset($_SESSION['wishlist'])) $_SESSION['wishlist'] = [];
                         <!--=== Desktop Menu ===-->
                         <nav class="main-menu d-none d-lg-block">
                             <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a href="index.php">Home</a></li>
+                                <li><a href="about-us.php">About Us</a></li>
                                 <li class="menu-item has-children">
                                     <a href="#">Products</a>
                                     <ul class="sub-menu">
                                         <li><a href="shops.php">All Products</a></li>
                                         <li><a href="shops.php?category[]=1">Unstitched Collection</a></li>
                                         <li><a href="shops.php?category[]=2">Stitched Collection</a></li>
-                                        <li><a href="shops.php?category[]=3">Casual Clipers</a></li>
-                                        <li><a href="shops.php?category[]=4">Footwear</a></li>
-                                        <li><a href="shops.php?category[]=5">Handbags</a></li>
+                                        <li><a href="shops.php?category[]=5">Casual Clipers</a></li>
+                                        <li><a href="shops.php?category[]=3">Footwear</a></li>
+                                        <li><a href="shops.php?category[]=4">Handbags</a></li>
                                         <li><a href="cart.php">Cart</a></li>
                                         <li><a href="checkout.php">Checkout</a></li>
                                         <li><a href="wishlist.php">Wishlist</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="faq.html">FAQs</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="faq.php">FAQs</a></li>
+                                <li><a href="contact.php">Contact</a></li>
                             </ul>
                         </nav>
                     </div>

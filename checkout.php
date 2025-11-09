@@ -1,5 +1,135 @@
+<?php
+session_start();
+include 'include/cart-functions.php';
+include 'config.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Collect form data
+    $full_name = trim($_POST['full_name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $country = trim($_POST['country']);
+    $city = trim($_POST['city']);
+    $zip_code = trim($_POST['zip_code']);
+    $address = trim($_POST['address']);
+    
+    // If payment_method not sent, default to Cash on Delivery
+    $payment_method = isset($_POST['payment_method']) ? trim($_POST['payment_method']) : "Cash on Delivery";
+
+    // Calculate subtotal
+    $subtotal = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+
+    // Delivery charge based on city
+    if (strtolower($city) === 'karachi') {
+        $delivery_charge = 250;
+    } elseif (strtolower($city) === 'other') {
+        $delivery_charge = 350;
+    } else {
+        $delivery_charge = 300;
+    }
+
+    $total_amount = $subtotal + $delivery_charge;
+
+    // --- Save order in database ---
+    $stmt = $conn->prepare("INSERT INTO orders (full_name, email, phone, country, city, zip_code, address, payment_method, total_amount, delivery_charge) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt->bind_param("ssssssssdd", $full_name, $email, $phone, $country, $city, $zip_code, $address, $payment_method, $total_amount, $delivery_charge);
+    $stmt->execute();
+    $order_id = $stmt->insert_id;
+
+    // --- Save items with color, size, total ---
+    $stmt_item = $conn->prepare("INSERT INTO order_items (order_id, product_id, product_name, quantity, price, total, color, size) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt_item) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+
+    foreach ($_SESSION['cart'] as $item) {
+        $line_total = $item['price'] * $item['quantity'];
+        $color = isset($item['color']) ? $item['color'] : '';
+        $size = isset($item['size']) ? $item['size'] : '';
+        $stmt_item->bind_param(
+            "iisiddss",
+            $order_id,
+            $item['id'],
+            $item['title'],
+            $item['quantity'],
+            $item['price'],
+            $line_total,
+            $color,
+            $size
+        );
+        $stmt_item->execute();
+    }
+
+    $stmt_item->close();
+    $stmt->close();
+
+    // --- Email Section ---
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'hscollextions@gmail.com'; 
+        $mail->Password = 'apap pzdx ufqu edqr'; 
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('hscollextions@gmail.com', 'HS Collextions');
+        $mail->addAddress($email, $full_name);
+        $mail->addAddress('hscollextions@gmail.com', 'HS Collextions Admin');
+        $mail->isHTML(true);
+        $mail->Subject = "New Order #$order_id from $full_name";
+
+        $body = "<h2>Order Confirmation</h2>
+        <p><b>Name:</b> $full_name<br>
+        <b>Email:</b> $email<br>
+        <b>Phone:</b> $phone<br>
+        <b>Address:</b> $address, $city ($zip_code), $country<br>
+        <b>Payment Method:</b> $payment_method<br>
+        <b>Delivery Charge:</b> Rs $delivery_charge<br>
+        <b>Total:</b> Rs $total_amount</p>
+        <h3>Order Details:</h3>
+        <ul>";
+
+        foreach ($_SESSION['cart'] as $item) {
+            $line_total = number_format($item['price'] * $item['quantity'], 2);
+            $color = isset($item['color']) ? $item['color'] : 'N/A';
+            $size = isset($item['size']) ? $item['size'] : 'N/A';
+            $body .= "<li>{$item['title']} (x{$item['quantity']}), Color: $color, Size: $size - Rs $line_total</li>";
+        }
+
+        $body .= "</ul><p><b>Thank you for shopping with HS Collections!</b></p>";
+
+        $mail->Body = $body;
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Mailer Error: {$mail->ErrorInfo}");
+    }
+
+    // Clear cart and redirect
+    $_SESSION['cart'] = [];
+    header("Location: thankyou.php?order_id=$order_id");
+    exit;
+}
+?>
+ 
+
+
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
     <head>
         <!--====== Required meta tags ======-->
         <meta charset="utf-8">
@@ -32,314 +162,31 @@
         <link rel="stylesheet" href="assets/css/default.css">
         <!--====== Style css ======-->
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="include/custom.css">
     </head>
     <body>
-        <!--====== Preloader ======-->
-        <div class="preloader">
-            <div class="loader">
-                <img src="assets/images/loader.gif" alt="Loader">
-            </div>
+                 <!--====== Preloader ======-->
+    <div class="preloader">
+        <div class="loader">
+            <img src="assets/images/loader.gif" alt="Loader">
         </div>
-        <!--====== Start Overlay ======-->
-        <div class="offcanvas__overlay"></div>
-        <!--====== Start Sidemenu-wrapper-cart Area ======-->
-        <div class="sidemenu-wrapper-cart">
-            <div class="sidemenu-content">
-                <div class="widget widget-shopping-cart">
-                    <h4>My cart</h4>
-                    <div class="sidemenu-cart-close"><i class="far fa-times"></i></div>
-                    <div class="widget-shopping-cart-content">
-                        <ul class="pesco-mini-cart-list">
-                            <li class="sidebar-cart-item">
-                                <a href="#" class="remove-cart"><i class="far fa-trash-alt"></i></a>
-                                <a href="#">
-                                    <img src="assets/images/products/cart-1.jpg" alt="cart image">
-                                    leggings with mesh panels
-                                </a>
-                                <span class="quantity">1 × <span><span class="currency">$</span>940.00</span></span>
-                            </li>
-                            <li class="sidebar-cart-item">
-                                <a href="#" class="remove-cart"><i class="far fa-trash-alt"></i></a>
-                                <a href="#">
-                                    <img src="assets/images/products/cart-2.jpg" alt="cart image">
-                                    Summer dress with belt
-                                </a>
-                                <span class="quantity">1 × <span><span class="currency">$</span>940.00</span></span>
-                            </li>
-                            <li class="sidebar-cart-item">
-                                <a href="#" class="remove-cart"><i class="far fa-trash-alt"></i></a>
-                                <a href="#">
-                                    <img src="assets/images/products/cart-3.jpg" alt="cart image">
-                                    Floral print sundress
-                                </a>
-                                <span class="quantity">1 × <span><span class="currency">$</span>940.00</span></span>
-                            </li>
-                            <li class="sidebar-cart-item">
-                                <a href="#" class="remove-cart"><i class="far fa-trash-alt"></i></a>
-                                <a href="#">
-                                    <img src="assets/images/products/cart-4.jpg" alt="cart image">
-                                    Sheath Gown Red Colors
-                                </a>
-                                <span class="quantity">1 × <span><span class="currency">$</span>940.00</span></span>
-                            </li>
-                        </ul>
-                        <div class="cart-mini-total">
-                            <div class="cart-total">
-                                <span><strong>Subtotal:</strong></span> <span class="amount">1 × <span><span class="currency">$</span>940.00</span></span>
-                            </div>
-                        </div>
-                        <div class="cart-button-box">
-                            <a href="checkout.html" class="theme-btn style-one">Proceed to checkout</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!--====== End Sidemenu-wrapper-cart Area ======-->
-        <!--====== Start Header Section ======-->
-        <header class="header-area">
-            <!--===  Search Header Main  ===-->
-            <div class="search-header-main">
-                <div class="container">
-                    <!--===  Search Header Inner  ===-->
-                    <div class="search-header-inner">
-                        <!--=== Site Branding  ===-->
-                        <div class="site-branding">
-                            <a href="index.html" class="brand-logo"><img src="assets/images/logo/logo-main.png" alt="Logo"></a>
-                        </div>
-                        <!--===  Product Search Category  ===-->
-                        <div class="product-search-category">
-                            <form action="#">
-                                <select class="wide">
-                                    <option>All Categories</option>
-                                    <option>Man Shirts</option>
-                                    <option>Denim Jeans</option>
-                                    <option>Casual Suit</option>
-                                    <option>Summer Dress</option>
-                                    <option>Sweaters</option>
-                                    <option>Jackets</option>
-                                </select>
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter Search Products">
-                                    <button class="search-btn"><i class="far fa-search"></i></button>
-                                </div>
-                            </form>
-                        </div>
-                        <!--===  Hotline Support  ===-->
-                        <div class="hotline-support item-rtl">
-                            <div class="icon">
-                                <i class="flaticon-support"></i>
-                            </div>
-                            <div class="info">
-                                <span>24/7 Support</span>
-                                <h5><a href="tel:+941234567894">+94 123 4567 894</a></h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--===  Header Navigation  ===-->
-            <div class="header-navigation style-one">
-                <div class="container">
-                    <!--=== Primary Menu ===-->
-                    <div class="primary-menu">
-                        <div class="site-branding d-lg-none d-block">
-                            <a href="index.html" class="brand-logo"><img src="assets/images/logo/logo-main.png" alt="Logo"></a>
-                        </div>
-                        <!--=== Nav Inner Menu ===-->
-                        <div class="nav-inner-menu">
-                            <!--=== Main Category ===-->
-                            <div class="main-categories-wrap d-none d-lg-block">
-                                <a class="categories-btn-active" href="#">
-                                    <span class="fas fa-list"></span><span class="text">Products Category<i class="fas fa-angle-down"></i></span>
-                                </a>
-                                <div class="categories-dropdown-wrap categories-dropdown-active">
-                                    <div class="categori-dropdown-item">
-                                        <ul>
-                                            <li>
-                                                <a href="shops.html"> <img src="assets/images/icon/shirt.png" alt="Shirts">Man Shirts</a>
-                                            </li>
-                                            <li>
-                                                <a href="shops.html"> <img src="assets/images/icon/denim.png" alt="Jeans">Denim Jeans</a>
-                                            </li>
-                                            <li>
-                                                <a href="shops.html"> <img src="assets/images/icon/suit.png" alt="Suit">Casual Suit</a>
-                                            </li>
-                                            <li>
-                                                <a href="shops.html"> <img src="assets/images/icon/dress.png" alt="Dress">Summer Dress</a>
-                                            </li>
-                                            <li>
-                                                <a href="shops.html"> <img src="assets/images/icon/sweaters.png" alt="Sweaters">Sweaters</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="more_slide_open">
-                                        <div class="categori-dropdown-item">
-                                            <ul>
-                                                <li>
-                                                    <a href="#"><img src="assets/images/icon/jacket.png" alt="Jackets">Jackets</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="more_categories"><span class="icon"></span> <span>Show more...</span></div>
-                                </div>
-                            </div>
-                            <!--=== Pesco Nav Main ===-->
-                            <div class="pesco-nav-main">
-                                <!--=== Pesco Nav Menu ===-->
-                                <div class="pesco-nav-menu">
-                                    <!--=== Responsive Menu Search ===-->
-                                    <div class="nav-search mb-40 d-block d-lg-none">
-                                        <div class="form-group">
-                                            <input type="search" class="form_control" placeholder="Search Here" name="search">
-                                            <button class="search-btn"><i class="far fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                    <!--=== Responsive Menu Tab ===-->
-                                    <div class="pesco-tabs style-three d-block d-lg-none">
-                                        <ul class="nav nav-tabs mb-30">
-                                            <li>
-                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav1">Menu</button>
-                                            </li>
-                                            <li>
-                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav2">Category</button>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="nav1">
-                                                <nav class="main-menu">
-                                                    <ul>
-                                                        <li class="menu-item has-children"><a href="#">Home</a>
-                                                            <ul class="sub-menu">
-                                                                <li><a href="index.html">Home 01</a></li>
-                                                                <li><a href="index-2.html">Home 02</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="menu-item has-children"><a href="#">Shop</a>
-                                                            <ul class="sub-menu">
-                                                                <li><a href="shops-grid.html">Shop Grid</a></li>
-                                                                <li><a href="shops.html">Shop left Sidebar</a></li>
-                                                                <li><a href="shops-right-sidebar.html">Shop Right Sidebar</a></li>
-                                                                <li><a href="shop-details.html">Product Details</a></li>
-                                                                <li><a href="cart.html">Cart</a></li>
-                                                                <li><a href="checkout.html">Checkout</a></li>
-                                                                <li><a href="wishlists.html">Wishlist</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="menu-item has-children"><a href="#">Blog</a>
-                                                            <ul class="sub-menu">
-                                                                <li><a href="blogs.html">Our Blog</a></li>
-                                                                <li><a href="blog-details.html">Blog Details</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="menu-item has-children"><a href="#">Pages</a>
-                                                            <ul class="sub-menu">
-                                                                <li><a href="about-us.html">About Us</a></li>
-                                                                <li><a href="faq.html">Faqs</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="menu-item"><a href="contact.html">Contact</a></li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                            <div class="tab-pane fade" id="nav2">
-                                                <div class="categori-dropdown-item">
-                                                    <ul>
-                                                        <li>
-                                                            <a href="shops.html"> <img src="assets/images/icon/shirt.png" alt="Shirts">Man Shirts</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shops.html"> <img src="assets/images/icon/denim.png" alt="Jeans">Denim Jeans</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shops.html"> <img src="assets/images/icon/suit.png" alt="Suit">Casual Suit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shops.html"> <img src="assets/images/icon/dress.png" alt="Dress">Summer Dress</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="shops.html"> <img src="assets/images/icon/sweaters.png" alt="Sweaters">Sweaters</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--===  Hotline Support  ===-->
-                                    <div class="hotline-support d-flex d-lg-none mt-30">
-                                        <div class="icon">
-                                            <i class="flaticon-support"></i>
-                                        </div>
-                                        <div class="info">
-                                            <span>24/7 Support</span>
-                                            <h5><a href="tel:+941234567894">+94 123 4567 894</a></h5>
-                                        </div>
-                                    </div>
-                                    <!--=== Main Menu ===-->
-                                    <nav class="main-menu d-none d-lg-block">
-                                        <ul>
-                                            <li class="menu-item has-children"><a href="#">Home</a>
-                                                <ul class="sub-menu">
-                                                    <li><a href="index.html">Home 01</a></li>
-                                                    <li><a href="index-2.html">Home 02</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item has-children"><a href="#">Shop</a>
-                                                <ul class="sub-menu">
-                                                    <li><a href="shops-grid.html">Shop Grid</a></li>
-                                                    <li><a href="shops.html">Shop left Sidebar</a></li>
-                                                    <li><a href="shops-right-sidebar.html">Shop Right Sidebar</a></li>
-                                                    <li><a href="shop-details.html">Product Details</a></li>
-                                                    <li><a href="cart.html">Cart</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                    <li><a href="wishlists.html">Wishlist</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item has-children"><a href="#">Blog</a>
-                                                <ul class="sub-menu">
-                                                    <li><a href="blogs.html">Our Blog</a></li>
-                                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item has-children"><a href="#">Pages</a>
-                                                <ul class="sub-menu">
-                                                    <li><a href="about-us.html">About Us</a></li>
-                                                    <li><a href="faq.html">Faqs</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item"><a href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                        <!--=== Nav Right Item ===-->
-                        <div class="nav-right-item style-one">
-                            <ul>
-                                <li>
-                                    <div class="deals d-lg-block d-none"><i class="far fa-fire-alt"></i>Deal</div>
-                                </li>
-                                <li>
-                                    <div class="wishlist-btn d-lg-block d-none"><i class="far fa-heart"></i><span class="pro-count">12</span></div>
-                                </li>
-                                <li>
-                                    <div class="cart-button d-flex align-items-center">
-                                        <div class="icon">
-                                            <i class="fas fa-shopping-bag"></i><span class="pro-count">01</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="navbar-toggler d-block d-lg-none">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header><!--====== End Header Section ======-->
+    </div>
+    <!--====== Start Overlay ======-->
+    <div class="offcanvas__overlay"></div>
+    <!--====== Start Sidemenu-wrapper-cart Area ======-->
+     <!-- Overlay and Side Carts -->
+     <div class="offcanvas__overlay"></div>
+    <?php include 'include/sidecart.php'; ?>
+    <?php include 'include/wishlistcart.php'; ?>
+    
+    <!-- Header Section -->
+    <header class="header-area">
+        <?php include 'include/header.php'; ?>
+        <?php include 'include/nav.php'; ?>
+    </header>
+    <!--====== End Header Section ======-->
+
+
         <!--====== Main Bg  ======-->
         <main class="main-bg">
             <!--====== Start Page Banner  ======-->
@@ -374,328 +221,199 @@
                     </div>
                 </div>
             </section><!--====== End Page Banner  ======-->
-            <section class="checkout-section pt-120 pb-80">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <!--=== Checkout Wrapper ===-->
-                            <div class="checkout-wrapper" data-aos="fade-up" data-aos-duration="1200">
-                                <!--=== Checkout Form ===-->
-                                <form class="checkout-form">
-                                    <div class="row">
-                                        <div class="col-xl-7">
-                                            <div class="billing-wrapper">
-                                                <h3 class="title">Billing details</h3>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>First Name <span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex: Thomas" name="name" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Last Name <span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex: Alison" name="name" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form-group">
-                                                            <label>Company name (optional)</label>
-                                                            <input type="text" class="form_control" placeholder="Ex: Alison" name="name" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form-group">
-                                                            <label>Country / Region<span>*</span></label>
-                                                            <select class="wide">
-                                                                <option>United States</option>
-                                                                <option>England</option>
-                                                                <option>New Zealand</option>
-                                                                <option>Switzerland</option>
-                                                                <option>Germany</option>
-                                                                <option>Sweden</option>
-                                                                <option>Canada</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Postcode / Zip <span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex:  WC2N 5DU" required="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Town / City <span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex: London" required="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form_group">
-                                                            <label>Street address<span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex:  123 Elm Street" required>
-                                                            <input type="text" class="form_control" placeholder="Ex:  123 Elm Street" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form_group">
-                                                            <label>Phone Number <span>*</span></label>
-                                                            <input type="text" class="form_control" placeholder="Ex: +1 (555) 123-4567" name="phone" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form_group">
-                                                            <label>Email address<span>*</span></label>
-                                                            <input type="email" class="form_control" placeholder="Ex: example@domain.com" name="email" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form_group">
-                                                            <label>Order Notes (optional)</label>
-                                                            <textarea name="order-note" class="form_control" placeholder="e.g. special notes for delivery."></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox"  id="flexCheckDefault">
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Create an account?
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5">
-                                            <div class="order-summary-wrapper mb-30">
-                                                <h3 class="title">Billing details</h3>
-                                                <div class="order-list">
-                                                    <div class="list-item">
-                                                        <div class="item-title">Product</div>
-                                                        <div class="subtotal">Subtotal</div>
-                                                    </div>
-                                                    <div class="product-item">
-                                                        <div class="product-name">Women Red & White Striped Crepe Top <span>x1</span></div>
-                                                        <div class="product-total">$50.00</div>
-                                                    </div>
-                                                    <div class="product-item">
-                                                        <div class="product-name">Women Red & White Striped Crepe Top <span>x1</span></div>
-                                                        <div class="product-total">$50.00</div>
-                                                    </div>
-                                                    <div class="product-item">
-                                                        <div class="product-name">Women Red & White Striped Crepe Top <span>x1</span></div>
-                                                        <div class="product-total">$50.00</div>
-                                                    </div>
-                                                    <div class="list-item">
-                                                        <div class="subtotal">Subtotal</div>
-                                                        <div class="product-total">$150.00</div>
-                                                    </div>
-                                                    <div class="list-item">
-                                                        <div class="shipping">Shipping</div>
-                                                        <div class="shipping-total">Free</div>
-                                                    </div>
-                                                    <div class="list-item">
-                                                        <div class="total">Total</div>
-                                                        <div class="product-total">$150.00</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="payment-method-wrapper">
-                                                <h4 class="title mb-20">Payments Method</h4>
-                                                <ul id="paymentMethod" class="mb-20">
-                                                    <!-- Default unchecked -->
-                                                    <li class="form-check">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="method1" checked>
-                                                        <label class="form-check-label" for="method1" data-bs-toggle="collapse" data-bs-target="#collapse0">Direct bank transfer</label>
-                                                        <div id="collapse0" class="collapse show" data-bs-parent="#paymentMethod">
-                                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                                        </div>
-                                                    </li>
-                                                    <!-- Default unchecked -->
-                                                    <li class="form-check">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="method2">
-                                                        <label class="form-check-label" for="method2" data-bs-toggle="collapse" data-bs-target="#collapse1">Check payments</label>
-                                                        <div id="collapse1" class="collapse" data-bs-parent="#paymentMethod">
-                                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                                        </div>
-                                                    </li>
-                                                    <!-- Default unchecked -->
-                                                    <li class="form-check">
-                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="method3">
-                                                        <label class="form-check-label" for="method3" data-bs-toggle="collapse" data-bs-target="#collapse2">Cash On Delivery</label>
-                                                        <div id="collapse2" class="collapse" data-bs-parent="#paymentMethod">
-                                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                                <button class="theme-btn style-one">Place Order</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <!--====== Start Footer Main  ======-->
-        <footer class="footer-main">
-            <!--=== Footer Bg Wrapper  ===-->
-            <div class="footer-bg-wrapper gray-bg">
-                <div class="footer-shape shape-one"><span><img src="assets/images/footer/shape-1.png" alt="shape"></span></div>
-                <svg id="footer-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 75" fill="none">
-                    <path d="M1888.99 40.9061C1901.65 33.5506 1917.87 10.0999 1920 0.000160217L2.48878 0.110695C-18.5686 5.37782 100.829 31.8098 104.136 32.5745C126.908 37.8407 182.163 45.7157 196.02 59.5798C199.049 62.6106 214.802 72.2205 222.15 72.2205C228.696 72.2205 237.893 62.3777 241.388 59.5798C254.985 48.6964 317.621 62.748 338.154 55.5577C378.089 41.5729 396.6 21.3246 452.148 27.4033C469.55 29.3076 497.787 39.4201 516.467 36.022C529.695 33.6155 539.612 26.7953 554.369 23.9558C576.978 19.6057 584.786 12.6555 612.371 13.0388C629.18 13.2724 648.084 27.6499 658.6 33.8673C672.059 41.8242 673.268 47.0554 692.77 41.4805C711.954 35.9964 746.756 38.27 766.852 40.0441C779.483 41.1593 819.866 52.3111 831.458 47.8009C837.236 45.5528 840.64 43.5162 847.537 41.3369C869.486 34.402 905.397 34.0022 929.946 38.6077C947.224 41.8489 987.666 45.9365 999.721 52.9722C1005.16 56.1489 1004.78 60.6539 1010.35 63.6019C1018.09 67.7037 1021.56 68.3083 1029.01 67.4803C1042.77 65.9505 1045.29 61.7272 1056.86 58.1434C1090.94 47.59 1121.71 32.7536 1160.52 26.5415C1182.98 22.9457 1193.92 36.1401 1209.04 41.4806C1240.16 52.468 1262.92 57.9972 1299.78 49.2374C1331.73 41.6466 1369.13 23.3813 1405.73 23.3813C1419.55 23.3813 1427.96 32.734 1435.31 37.4585C1451.38 47.7919 1467 56.9943 1493.89 56.9943C1532.36 56.9943 1544.2 49.9853 1574.29 39.0386C1588.58 33.8384 1616.86 22.826 1635.73 23.3813C1651.4 23.8424 1656.97 43.603 1667.89 48.6629C1683.26 55.7835 1710.61 49.5903 1723.88 43.7789C1736.22 38.3771 1758.43 20.6985 1777.29 30.1327C1788.48 35.7274 1794.71 53.9926 1801.12 61.5909C1815.62 78.7687 1819.96 77.5598 1843.05 68.4859C1861.58 61.2028 1873.63 49.8315 1888.99 40.9061Z" fill="#FFFAF3"/>
-                </svg>
-                <!--=== Footer Widget Area  ===-->
-                <div class="footer-widget-area pb-80">
-                    <div class="container">
+<!-- === Checkout Page === -->
+<!-- === Checkout Page === -->
+<section class="checkout-section pt-120 pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="checkout-wrapper" data-aos="fade-up" data-aos-duration="1200">
+                    <form class="checkout-form" method="POST" id="checkoutForm">
                         <div class="row">
-                            <div class="col-xl-3 col-sm-6">
-                                <!--=== Footer Widget  ===-->
-                                <div class="footer-widget about-company-widget mb-40" data-aos="fade-up" data-aos-delay="10" data-aos-duration="1000">
-                                    <div class="widget-content">
-                                        <a href="index.html" class="footer-logo"><img src="assets/images/logo/logo-main.png" alt="Brand Logo"></a>
-                                        <p>Pesco is an exciting International brand we provide high quality cloths</p>
-                                        <ul class="ct-info-list mb-30">
-                                            <li>
-                                                <i class="fas fa-envelope"></i>
-                                                <a href="mailto:info@mydomain.com">info@mydomain.com</a>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-phone-alt"></i>
-                                                <a href="mailto:info@mydomain.com">info@mydomain.com</a>
-                                            </li>
-                                        </ul>
-                                        <ul class="social-link">
-                                            <li>
-                                                <span>Find Us:</span>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 col-sm-6">
-                                <!--=== Footer Widget ===-->
-                                <div class="footer-widget footer-nav-widget mb-40" data-aos="fade-up" data-aos-delay="15" data-aos-duration="1200">
-                                    <div class="widget-content">
-                                        <h4 class="widget-title">Customer Services</h4>
-                                        <ul class="widget-menu">
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Collections & Delivery</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Returns & Refunds</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Terms & Conditions</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Delivery Return</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Store Locations</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 col-sm-6">
-                                <!--=== Footer Widget ===-->
-                                <div class="footer-widget footer-nav-widget mb-40" data-aos="fade-up" data-aos-delay="20" data-aos-duration="1400">
-                                    <div class="widget-content">
-                                        <h4 class="widget-title">Quick Link</h4>
-                                        <ul class="widget-menu">
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Privacy Policy</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Terms Of Use</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">FAQ</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Contact</a></li>
-                                            <li><img src="assets/images/icon/star-3.svg" alt="star icon"><a href="#">Login / Register</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-sm-6">
-                                <!--=== Footer Widget  ===-->
-                                <div class="footer-widget footer-recent-post-widget" data-aos="fade-up" data-aos-delay="25" data-aos-duration="1600">
-                                    <h4 class="widget-title">Recent Post</h4>
-                                    <div class="widget-content">
-                                        <div class="recent-post-item">
-                                            <div class="thumb">
-                                                <img src="assets/images/footer/recent-post-1.png" alt="post thumb">
-                                            </div>
-                                            <div class="content">
-                                                <h4><a href="blog-details.html">Tips on Finding Affordable Fashion Gems Online</a></h4>
-                                                <span><a href="blog-details.html">July 11, 2023</a></span>
+                            <!-- Billing Details -->
+                            <div class="col-xl-7">
+                                <div class="billing-wrapper">
+                                    <h3 class="title">Billing Details</h3>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Full Name <span>*</span></label>
+                                                <input type="text" class="form_control" name="full_name" required>
                                             </div>
                                         </div>
-                                        <div class="recent-post-item">
-                                            <div class="thumb">
-                                                <img src="assets/images/footer/recent-post-2.png" alt="post thumb">
-                                            </div>
-                                            <div class="content">
-                                                <h4><a href="blog-details.html">Mastering the Art of Fashion E-commerce Marketing</a></h4>
-                                                <span><a href="blog-details.html">JUly 11, 2024</a></span>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Phone Number <span>*</span></label>
+                                                <input type="text" class="form_control" name="phone" required>
                                             </div>
                                         </div>
-                                        <div class="recent-post-item">
-                                            <div class="thumb">
-                                                <img src="assets/images/footer/recent-post-3.png" alt="post thumb">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Email Address <span>*</span></label>
+                                                <input type="email" class="form_control" name="email" required>
                                             </div>
-                                            <div class="content">
-                                                <h4><a href="blog-details.html">Must-Have Trends You Can Shop Online Now</a></h4>
-                                                <span><a href="blog-details.html">July 11, 2024</a></span>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Country / Region<span>*</span></label>
+                                                <select class="wide" name="country" required>
+                                                    <option>Pakistan</option>
+                                                    <option>Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>City <span>*</span></label>
+                                                <select class="wide" name="city" id="citySelect" required>
+                                                    <option value="">Select City</option>
+                                                    <option value="Karachi" selected>Karachi</option>
+                                                    <option value="Lahore">Lahore</option>
+                                                    <option value="Islamabad">Islamabad</option>
+                                                    <option value="Faisalabad">Faisalabad</option>
+                                                    <option value="Multan">Multan</option>
+                                                    <option value="Hyderabad">Hyderabad</option>
+                                                    <option value="Peshawar">Peshawar</option>
+                                                    <option value="Quetta">Quetta</option>
+                                                    <option value="Gujranwala">Gujranwala</option>
+                                                    <option value="Sialkot">Sialkot</option>
+                                                    <option value="Sukkur">Sukkur</option>
+                                                    <option value="Bahawalpur">Bahawalpur</option>
+                                                    <option value="Sargodha">Sargodha</option>
+                                                    <option value="Rawalpindi">Rawalpindi</option>
+                                                    <option value="Other">Other (Enter Manually)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Zip Code <span>*</span></label>
+                                                <input type="text" class="form_control" name="zip_code" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Shipping Address<span>*</span></label>
+                                                <input type="text" class="form_control" name="address" required>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+                            <!-- Order Summary -->
+                            <div class="col-xl-5">
+                                <div class="order-summary-wrapper mb-30">
+                                    <h3 class="title">Your Order</h3>
+                                    <div class="order-list">
+    <div class="list-item">
+        <div class="item-title">Product</div>
+        <div class="subtotal">Subtotal</div>
+    </div>
+
+    <?php if (!empty($_SESSION['cart'])): ?>
+        <?php 
+        $subtotal = 0; 
+        foreach ($_SESSION['cart'] as $item): 
+            $line_total = $item['price'] * $item['quantity'];
+            $subtotal += $line_total;
+            $color = isset($item['color']) ? $item['color'] : 'N/A';
+            $size = isset($item['size']) ? $item['size'] : 'N/A';
+        ?>
+            <div class="product-item">
+                <div class="product-name">
+                    <?= htmlspecialchars($item['title']) ?> <br>
+                    <small>Color: <?= htmlspecialchars($color) ?> | Size: <?= htmlspecialchars($size) ?> x<?= $item['quantity'] ?></small>
                 </div>
-                <!--=== Footer Copyright  ===-->
-                <div class="copyright-area">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6">
-                                <div class="copyright-text">
-                                    <p>&copy; 2024. All rights reserved by <span>Pixelfit</span></p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="payment-method text-lg-end">
-                                    <a href="#"><img src="assets/images/footer/payment-method.png" alt="payment-method"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="product-total">
+                    Rs <?= number_format($line_total) ?>
                 </div>
             </div>
-        </footer><!--====== End Footer Main  ======-->
-        <!--====== Back To Top  ======-->
-        <div class="back-to-top" ><i class="far fa-angle-up"></i></div>
-        <!--====== Jquery js ======-->
-        <script src="assets/vendor/jquery-3.7.1.min.js"></script>
-        <!--====== Bootstrap js ======-->
-        <script src="assets/vendor/popper/popper.min.js"></script>
-        <!--====== Bootstrap js ======-->
-        <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-        <!--====== Slick js ======-->
-        <script src="assets/vendor/slick/slick.min.js"></script>
-        <!--====== Magnific js ======-->
-        <script src="assets/vendor/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-        <!--====== Nice-select js ======-->
-        <script src="assets/vendor/nice-select/js/jquery.nice-select.min.js"></script>
-        <!--====== Jquery Ui js ======-->
-        <script src="assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-        <!--====== SimplyCountdown js ======-->
-        <script src="assets/vendor/simplyCountdown.min.js"></script>
-        <!--====== Aos js ======-->
-        <script src="assets/vendor/aos/aos.js"></script>
-        <!--====== Main js ======-->
-        <script src="assets/js/theme.js"></script>
+        <?php endforeach; ?>
+        
+        <div class="list-item">
+            <div class="subtotal">Subtotal</div>
+            <div class="product-total" id="subtotal">Rs <?= number_format($subtotal) ?></div>
+        </div>
+        <div class="list-item">
+            <div class="shipping">Shipping</div>
+            <div class="shipping-total" id="shippingCost">Rs 250</div>
+        </div>
+        <div class="list-item">
+            <div class="total">Total</div>
+            <div class="product-total" id="totalAmount">Rs <?= number_format($subtotal + 250) ?></div>
+        </div>
+    <?php else: ?>
+        <p>Your cart is empty.</p>
+    <?php endif; ?>
+</div>
+
+                                </div>
+
+                                <!-- Payment Info (COD only) -->
+                                <div class="payment-method-wrapper">
+                                    <h4 class="title mb-20">Cash on Delivery</h4>
+                                    <button type="submit" class="theme-btn style-one">
+    Place Order <i class="fas fa-arrow-right"></i>
+</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- === Shipping and Total Update Script === -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const citySelect = document.getElementById('citySelect');
+    const subtotalText = document.getElementById('subtotal').innerText.replace('Rs', '').trim();
+    const subtotal = parseInt(subtotalText.replace(/,/g, '')) || 0;
+    const shippingCost = document.getElementById('shippingCost');
+    const totalAmount = document.getElementById('totalAmount');
+
+    function updateShipping() {
+        const city = citySelect.value.toLowerCase();
+        let shipping = 0;
+
+        if (city === 'karachi') {
+            shipping = 250;
+        } else if (city === 'other') {
+            shipping = 350;
+        } else if (city !== '') {
+            shipping = 300;
+        } else {
+            shipping = 0;
+        }
+
+        if (shipping > 0) {
+            shippingCost.innerText = 'Rs ' + shipping;
+            totalAmount.innerText = 'Rs ' + (subtotal + shipping);
+        } else {
+            shippingCost.innerText = 'Select City';
+            totalAmount.innerText = 'Rs ' + subtotal;
+        }
+    }
+
+    // Update shipping instantly when city changes
+    citySelect.addEventListener('change', updateShipping);
+
+    // Set default Karachi shipping on load
+    updateShipping();
+});
+</script>
+
+
+        </main>
+            <!--====== Start Footer Main  ======-->
+      <?php include 'include/footer.php' ?>
+    <!--====== End Footer Main ======-->
+    
+    <!--====== Main js ======-->
+    <script src="assets/js/wishlist.js"></script>
     </body>
 </html>

@@ -77,23 +77,24 @@
                         </div>
                     </div>
 
-                    <!-- Newsletter / Subscribe -->
-                    <div class="col-xl-3 col-md-6">
-                        <div class="footer-widget newsletter-widget mb-40" data-aos="fade-up" data-aos-delay="25">
-                            <div class="widget-content">
-                                <h4 class="widget-title" style="color: #de3576">Stay Connected</h4>
-                                <p style="color: #13172B;">Subscribe to our newsletter for latest updates, trends & offers.</p>
-                                <form class="newsletter-form" action="#" method="post">
-                                    <input type="email" name="email" placeholder="Enter your email" required
-                                           style="padding:10px;border:1px solid #ccc;width:100%;margin-bottom:10px;border-radius:6px;">
-                                    <button type="submit" style="background:#de3576;color:#fff;border:none;padding:10px 15px;border-radius:6px;width:100%;">
-                                        Subscribe
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
+                 <!-- Newsletter / Subscribe -->
+<div class="col-xl-3 col-md-6">
+    <div class="footer-widget newsletter-widget mb-40" data-aos="fade-up" data-aos-delay="25">
+        <div class="widget-content">
+            <h4 class="widget-title" style="color: #de3576">Stay Connected</h4>
+            <p style="color: #13172B;">Subscribe to our newsletter for latest updates, trends & offers.</p>
+            <form id="footer-newsletter-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="e8692be6-515c-4244-a7ba-6497ae5b8e20">
+                <input type="email" name="email" placeholder="Enter your email" required
+                       style="padding:10px;border:1px solid #ccc;width:100%;margin-bottom:10px;border-radius:6px;">
+                <button type="submit" style="background:#de3576;color:#fff;border:none;padding:10px 15px;border-radius:6px;width:100%;">
+                    Subscribe
+                </button>
+            </form>
+            <div id="footer-newsletter-msg" style="margin-top:10px;"></div>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -133,3 +134,33 @@
 <script src="assets/vendor/simplyCountdown.min.js"></script>
 <script src="assets/vendor/aos/aos.js"></script>
 <script src="assets/js/theme.js"></script>
+
+<script>
+const footerForm = document.getElementById('footer-newsletter-form');
+const footerMsg = document.getElementById('footer-newsletter-msg');
+
+footerForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    footerMsg.textContent = "⏳ Submitting...";
+    footerMsg.style.color = "#777";
+
+    const formData = new FormData(footerForm);
+
+    try {
+        const res = await fetch(footerForm.action, { method: 'POST', body: formData });
+        const text = await res.text();
+
+        if (text.includes("success")) {
+            footerMsg.textContent = "🎉 Thank you for subscribing!";
+            footerMsg.style.color = "green";
+            footerForm.reset();
+        } else {
+            footerMsg.textContent = "⚠️ Something went wrong. Try again.";
+            footerMsg.style.color = "red";
+        }
+    } catch (err) {
+        footerMsg.textContent = "⚠️ Network error. Please try again.";
+        footerMsg.style.color = "red";
+    }
+});
+</script>

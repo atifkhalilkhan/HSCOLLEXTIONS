@@ -1096,6 +1096,7 @@ button {
   font-size: 12px;
   font-weight: 500;
 }
+
 @media (max-width: 991px) {
   .nav-right-item.style-one .pro-count {
     display: inline-block;

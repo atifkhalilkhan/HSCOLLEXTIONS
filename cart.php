@@ -96,7 +96,7 @@ if (isset($_POST['clear_cart'])) {
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="eCommerce,shop,fashion">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Cart - Pesco</title>
+    <title>Cart - H.S Collextions</title>
     <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Aoboshi+One&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/fonts/flaticon/flaticon_pesco.css">

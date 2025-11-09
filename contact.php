@@ -14,7 +14,7 @@ include 'include/cart-functions.php';
         <meta name="description" content="eCommerce,shop,fashion">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!--====== Title ======-->
-        <title>Pesco - eCommerce HTML Template</title>
+        <title>H.S Collextions</title>
         <!--====== Favicon Icon ======-->
         <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
         <!--====== Google Fonts ======-->
